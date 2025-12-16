@@ -1,5 +1,5 @@
 <img src="https://www.nolangraysongames.com/Title.png" alt="Title"/>
 <h2>The official Code For Nolan And Grayson Games</h2>
-<p>Nolan's And Grayson's Games is a wesite where user can get links to play games at school and bypassing the Securly Fire Wall.</p>
+<p>Nolan's And Grayson's Games is a wesite where user can get links to play games at school and bypassing the Securly Fire Wall. Our goal is to have a 100% HTML website where any one can add it to a website hosting platform and play games. We are also aiming to have may games that are in the website that lanch in about:Blank. But I your a kid we recommend that you only play games if you have nothing to do.</p>
 <p>If you are trying to find games for school we recommend you use our website <a href="https://www.nolangraysongames.com">nolangraysongames.com</a> if that is blocked we also recommend that you join our <a href="https://discord.gg/nNCWgRJZ7v">Discord</a> Linked here for useable uptodate links. But what ever you do thanks for using Nolan's and Grayson's Games</p>
 <img class="small" src="https://www.nolangraysongames.com/Logo.png" alt="Logo"/>
