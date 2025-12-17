@@ -752,6 +752,32 @@
                 document.getElementById("themeSelect").value = savedTheme;
               });
               </script>
+              <script>
+                // Add star to every link automatically
+                document.addEventListener("DOMContentLoaded", () => {
+                  const links = document.querySelectorAll("#content a");
+                  links.forEach(link => {
+                    // Skip if star already exists
+                    if (!link.nextElementSibling || !link.nextElementSibling.classList.contains("star")) {
+                      const star = document.createElement("span");
+                      star.className = "star";
+                      star.textContent = "★";
+                      star.style.cursor = "pointer";
+                      star.style.marginLeft = "6px";
+                
+                      // Handle click to toggle favorite
+                      star.addEventListener("click", () => toggleFavorite(link));
+                
+                      // Add after link
+                      link.parentNode.insertBefore(star, link.nextSibling);
+                    }
+                  });
+                
+                  // Make sure all stars match saved favorites
+                  updateStars();
+                });
+                </script>
+
 
 
     
@@ -772,7 +798,7 @@
         <input type="text" id="search"placeholder="Search links..." onkeyup="searchLinks()"/>
         <span id="clear-search" onclick="clearSearch()">x</span>
       </div>
-      <div style="text-align:center; margin-bottom:15 px;">
+      <div style="text-align:center; margin-bottom:15px;">
         <select id="sort" onchange="saveAndSort()">
           <option value="az">A–Z</option>
           <option value="za">Z–A</option>
