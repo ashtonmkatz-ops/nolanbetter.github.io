@@ -219,6 +219,38 @@
         text-align: center;
       }
 
+      .search-container {
+        position: relative;
+        width: 300px;
+        margin: 15px auto;
+      }
+      
+      #search {
+        width: 100%;
+        padding: 10px 35px 10px 10px; /* space for the × */
+        font-size: 18px;
+        background-color: black;
+        color: white;
+        border: 2px solid white;
+        border-radius: 10px;
+        text-align: center;
+      }
+      
+      #clear-search {
+        position: absolute;
+        right: 10px;
+        top: 50%;
+        transform: translateY(-50%);
+        cursor: pointer;
+        color: white;
+        font-size: 20px;
+        user-select: none;
+      }
+      
+      #clear-search:hover {
+        color: red;
+      }
+
     </style>
   </head>
   <body>
@@ -352,6 +384,15 @@
       });
     </script>
 
+    <script>
+      function clearSearch() {
+        const search = document.getElementById("search");
+        search.value = "";
+        searchLinks(); // show all links again
+        search.focus(); // optional: focus input after clearing
+      }
+    </script>
+
     
     <!-- Password input area -->
     <img class="wobble" src="Title.png" alt="Title" onclick="window.location.href='https://www.nolangrayson.com';" style="cursor:pointer;">
@@ -365,12 +406,11 @@
     </div>
     <!-- Hidden content revealed after password -->
     <div id="content">
-      <input
-        type="text"
-        id="search"
-        placeholder="Search links..."
-        onkeyup="searchLinks()"
-      />
+      <div class="search-container">
+        <input type="text" id="search"placeholder="Search links..." onkeyup="searchLinks()"/>
+        <span id="clear-search" onclick="clearSearch()">X</span>
+      </div>
+
       
       <h2>Websites</h2>
       <a href="https://helios-browser.vercel.app/?sca_esv=91bd149827a5c7e1&amp;ie=ISO-8859-1&amp;q=duck+the+dick+layer&amp;oq=&amp;aqs=">Helios Browser #1</a>
@@ -457,17 +497,11 @@
       <a href="https://study.info.scallex.net/">Utopia #2</a>
       <a class="pageb" href="https://securly.com.mtomtech.co.kr/"> Study.com (Roblox)</a>
       <a class="pageb" href="https://rblx-7918337.codehs.me/">Roblox</a>
-      <h5>For Most Utopia Links Refresh page after opening link</h5>
-      <h5>Roblox User #1 - Username:gest15439 - Password:nolangraysongames</h5>
-      <h5>Roblox User #2 - Username:gamingatschool_gb - Password:nolangraysongames</h5>
-      <h5>Roblox User #3 - Username:schoolgaming553 - Password:nolangraysongames</h5>
-      
+
       <h2>Games</h2>
-      <h5>We Are Working On Making all The Games Lanch in About:Blank so Please Wait</h5>
       <a href="pixel-gun.html">Pixel Gun</a>
     
       <h2> Eaglercraft </h2>
-      <h5>Coming To About:Blank Soon</h5>
       <a href="https://new-sandbox-program-43-16834996.codehs.me/index.html">Eaglercraft Indev</a>
       <a href="https://new-sandbox-program-42-16834902.codehs.me/index.html">Eaglercraft Beta 1.2.6</a>
       <a href="https://new-sandbox-program-41-16834838.codehs.me/index.html">Eaglercraft Beta 1.3</a>
