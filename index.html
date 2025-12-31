@@ -2,147 +2,239 @@
 <html>
   <head>
     <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Nolan's And Grayson's Games</title>
     <link rel="icon" href="Logo.png" type="image/x-icon">
     <style>
+      * {
+        transition: background-color 0.4s ease, color 0.4s ease, border-color 0.4s ease;
+      }
+
+      /* Base body styles */
       body {
         text-align: center;
         background-color: black;
         color: white;
         font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        overflow-x: hidden;
       }
-      
+
+      /* Default Dark Theme */
+      body.dark {
+        background-color: black;
+        color: white;
+      }
+
+      body.dark a,
+      body.dark #submit-btn {
+        background: black;
+        color: white;
+        border-color: white;
+      }
+
+      body.dark #search,
+      body.dark #pw,
+      body.dark #sort,
+      body.dark #categorySelect,
+      body.dark #themeSelect {
+        background: black;
+        color: white;
+        border-color: white;
+      }
+
+      body.dark .warning-box {
+        background: black;
+        border-color: red;
+        box-shadow: 0 0 20px red;
+      }
+
+      body.dark .warning-box button {
+        background: black;
+        color: white;
+        border-color: white;
+      }
+
+      body.dark #clear-search {
+        color: white;
+      }
+
+      body.dark #clear-search:hover {
+        color: red;
+      }
+
+      body.dark .link-container .star {
+        color: gray;
+      }
+
+      body.dark .link-container .star.favorited {
+        color: gold;
+      }
+
+      /* Links */
+      .link-container {
+        display: inline-block;
+        position: relative;
+        margin: 5px;
+        width: calc(100% - 20px);
+        max-width: 400px;
+      }
 
       a {
-        display: inline-block;
-        padding: 10px 20px;
+        display: block;
+        width: 100%;
+        padding: 12px 40px 12px 15px;
         background-color: black;
         color: white; 
-        border-color: white;
+        border: 2px solid white;
         text-decoration: none;
-        border: solid;
         border-radius: 5px;
         cursor: pointer;
-        text-align: center;
+        text-align: left;
+        transition: transform 0.2s ease;
+        box-sizing: border-box;
+        font-size: 14px;
       }
+
       a:hover {
-        transform: scale(1.2); /* makes the link 20% bigger */
-        transition: transform 0.2s ease; /* smooth animation */
+        transform: scale(1.02);
       }
+
+      /* Text Styles */
       h2 {
         text-decoration: underline;
+        font-size: 1.5em;
+        margin: 20px 10px;
       }
-      .button-link {
-        display: inline-block;
-        padding: 10px 20px;
-        background-color: black;
-        color: white; 
-        border-color: white;
-        text-decoration: none;
-        border: solid;
-        border-radius: 5px;
-        cursor: pointer;
-        text-align: center;
+
+      h6 {
+        font-size: 0.9em;
+        margin: 10px;
       }
+
+      p {
+        font-size: 0.95em;
+        padding: 0 15px;
+        line-height: 1.6;
+      }
+
       .blocked {
         color: red;
         text-decoration: line-through;
       }
-      .red{
-        color: red;
-      }
-      .discord{
-        display: inline-block;
-        padding: 10px 20px;
-        background-color: black;
-        color: blue; 
-        border-color: blue;
-        text-decoration: none;
-        border: solid;
-        border-radius: 5px;
-        cursor: pointer;
-        text-align: center;
-      }
+
       .pageb {
         color: yellow;
       }
-      .smallimg{
-        width: 50px;
-        float: left;
+
+      .discord {
+        color: blue; 
+        border-color: blue;
       }
 
-      /* Center password area */
+      .smallimg {
+        width: 40px;
+        float: left;
+        margin: 10px;
+      }
+
+      .wobble {
+        max-width: 90%;
+        height: auto;
+      }
+
+      /* Password Area */
       #password-area {
         position: fixed;
         top: 50%;
         left: 50%;
         transform: translate(-50%, -50%);
+        z-index: 100;
+        width: 90%;
+        max-width: 400px;
+        padding: 0 10px;
+        box-sizing: border-box;
       }
 
       #pw {
-        font-size: 24px;
-        padding: 10px;
-        width: 300px;
+        font-size: 18px;
+        padding: 12px;
+        width: 100%;
+        max-width: 300px;
         background-color: black;
         color: white;
         border: 2px solid white;
         text-align: center;
         border-radius: 10px;
+        box-sizing: border-box;
       }
 
       #submit-btn {
-        font-size: 24px;
-        padding: 10px 20px;
-        margin-left: 10px;
+        font-size: 18px;
+        padding: 12px 20px;
+        margin-top: 10px;
         background-color: black;
         color: white;
         border: 2px solid white;
         cursor: pointer;
         border-radius: 10px;
         transition: transform 0.25s ease;
-      }
-      #submit-btn:hover {
-       transform: scale(1.2);
+        width: 100%;
+        max-width: 300px;
       }
 
-      /* Hidden content with fade-in */
+      #submit-btn:hover {
+        transform: scale(1.05);
+      }
+
+      .pw-error {
+        display: none;
+        color: red;
+        font-size: 18px;
+        margin-top: 12px;
+        text-align: center;
+      }
+
+      /* Content Area */
       #content {
         margin-top: 20px;
+        padding: 0 10px;
         opacity: 0;
         transition: opacity 1s ease-in;
-        display: none; /* hide initially */
+        display: none;
       }
 
       #content.show {
         display: block;
         opacity: 1;
       }
+
+      /* Wobble Animation */
       .wobble {
         display: inline-block;
         cursor: pointer;
-        animation: wobble 1s infinite; /* continuous wobble */
+        animation: wobble 1s infinite;
       }   
 
       .wobble:active {
-        animation: bounce 1s; /* temporary bounce on click */
+        animation: bounce 1s;
       }
 
       @keyframes wobble {
-        0%   { transform: rotate(0deg); }
-        25%  { transform: rotate(-2deg); }
-        50%  { transform: rotate(2deg); }
-        75%  { transform: rotate(-2deg); }
-        100% { transform: rotate(0deg); }
+        0%, 100% { transform: rotate(0deg); }
+        25%, 75% { transform: rotate(-2deg); }
+        50% { transform: rotate(2deg); }
       }
 
       @keyframes bounce {
-        0%   { transform: scale(1); }
-        30%  { transform: scale(1.2); }
-        50%  { transform: scale(0.9); }
-        70%  { transform: scale(1.1); }
-        100% { transform: scale(1); }
+        0%, 100% { transform: scale(1); }
+        30% { transform: scale(1.2); }
+        50% { transform: scale(0.9); }
+        70% { transform: scale(1.1); }
       }
-      /* Warning overlay */
+
+      /* Warning Overlay */
       #unofficial-warning {
         position: fixed;
         top: 0;
@@ -154,676 +246,493 @@
         align-items: center;
         justify-content: center;
         z-index: 9999;
-      }
-      .pw-error {
-        display: none;
-        color: red;
-        font-size: 18px;
-        margin-top: 12px;
-        text-align: center;
+        padding: 20px;
+        box-sizing: border-box;
       }
 
-      
       .warning-box {
         background: black;
         border: 2px solid red;
-        padding: 30px;
+        padding: 20px;
         max-width: 500px;
+        width: 90%;
         text-align: center;
         border-radius: 15px;
         box-shadow: 0 0 20px red;
       }
-      
+
       .warning-box h2 {
         color: red;
+        font-size: 1.3em;
       }
-      
+
       .official-link {
         color: yellow;
         word-break: break-all;
+        font-size: 0.9em;
       }
-      
+
       .warning-box button {
         margin-top: 20px;
-        padding: 10px 25px;
-        font-size: 18px;
+        padding: 12px 25px;
+        font-size: 16px;
         background: black;
         color: white;
         border: 2px solid white;
         border-radius: 10px;
         cursor: pointer;
+        width: 100%;
+        max-width: 200px;
       }
-      
+
       .warning-box button:hover {
-        transform: scale(1.1);
+        transform: scale(1.05);
       }
+
+      /* Background Canvas */
       #bg {
         position: fixed;
         top: 0;
         left: 0;
         width: 100%;
         height: 100%;
-        z-index: -1; /* stays behind everything */
+        z-index: -1;
         background: black;
       }
-      #search {
-        width: 300px;
-        padding: 10px;
+
+      /* Search Box */
+      .search-container {
+        position: relative;
+        width: 90%;
+        max-width: 400px;
         margin: 15px auto;
-        display: block;
-        font-size: 18px;
-        background-color: black;
-        color: white;
-        border: 2px solid white;
-        border-radius: 10px;
         text-align: center;
       }
 
-      .search-container {
-        position: relative;
-        width: 300px;
-        margin: 15px auto;
-      }
-      
       #search {
         width: 100%;
-        padding: 10px 35px 10px 10px; /* space for the × */
-        font-size: 18px;
+        padding: 12px 40px 12px 15px;
+        font-size: 16px;
         background-color: black;
         color: white;
         border: 2px solid white;
         border-radius: 10px;
         text-align: center;
+        box-sizing: border-box;
       }
-      
+
       #clear-search {
+        position: absolute;
+        right: 12px;
+        top: 50%;
+        transform: translateY(-50%);
+        cursor: pointer;
+        color: white;
+        font-size: 22px;
+        user-select: none;
+        padding: 5px;
+      }
+
+      #clear-search:hover {
+        color: red;
+      }
+
+      /* Stars/Favorites */
+      .star {
         position: absolute;
         right: 10px;
         top: 50%;
         transform: translateY(-50%);
         cursor: pointer;
-        color: white;
-        font-size: 20px;
-        user-select: none;
-      }
-      
-      #clear-search:hover {
-        color: red;
-      }
-      .star {
-        cursor: pointer;
         color: gray;
-        margin-left: 8px;
-        font-size: 18px;
+        font-size: 20px;
+        z-index: 10;
+        transition: all 0.3s ease;
+        padding: 5px;
       }
-      
+
+      .star:hover {
+        transform: translateY(-50%) scale(1.2);
+      }
+
       .star.favorited {
         color: gold;
       }
-      
-      #favorites a {
-        display: inline-block;
-      }
 
       @keyframes starPop {
-        0% {
-          transform: scale(1);
-          text-shadow: none;
-        }
-        50% {
-          transform: scale(1.6);
-          text-shadow: 0 0 10px gold;
-        }
-        100% {
-          transform: scale(1);
-          text-shadow: none;
-        }
+        0%, 100% { transform: scale(1); text-shadow: none; }
+        50% { transform: scale(1.6); text-shadow: 0 0 10px gold; }
       }
-      
+
       .star.animate {
         animation: starPop 0.35s ease;
       }
-      #tabs {
-        text-align: center;
-        margin-bottom: 20px;
+
+      /* Dropdowns Container */
+      .controls-container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 8px;
+        margin: 15px auto;
+        flex-wrap: wrap;
+        padding: 0 10px;
       }
-      
-      #tabs button {
+
+      /* Sort, Category, and Theme Selectors */
+      #sort, #categorySelect, #themeSelect {
         background: black;
         color: white;
         border: 2px solid white;
-        margin: 5px;
-        padding: 8px 14px;
-        border-radius: 10px;
-        cursor: pointer;
-      }
-      
-      #tabs button:hover {
-        transform: scale(1.1);
-      }
-      #sort {
-        background: black;
-        color: white;
-        border: 2px solid white;
-        padding: 6px 10px;
+        padding: 10px 12px;
         border-radius: 8px;
-        font-size: 16px;
+        font-size: 14px;
         cursor: pointer;
+        min-width: 140px;
+        flex: 1;
+        max-width: 200px;
       }
-      /* Theme button */
-      #themeToggle {
-        background: black;
-        color: white;
-        border: 2px solid white;
-        padding: 6px 12px;
-        border-radius: 8px;
-        cursor: pointer;
-        margin-left: 10px;
-      }
+
+      /* Theme Styles */
       
-      /* LIGHT THEME */
+      /* Light Theme */
       body.light {
-        background-color: white;
+        background: white;
         color: black;
       }
-      
-      body.light a {
-        background-color: white;
-        color: black;
-        border-color: black;
-      }
-      
-      body.light #themeToggle {
+
+      body.light a,
+      body.light #submit-btn {
         background: white;
         color: black;
         border-color: black;
       }
-      * {
-        transition:
-          background-color 0.4s ease,
-          color 0.4s ease,
-          border-color 0.4s ease;
+
+      body.light .link-container .star {
+        color: #666;
       }
-      /* Theme selector */
-      #themeSelect {
-        background: black;
-        color: white;
-        border: 2px solid white;
-        padding: 6px 10px;
-        border-radius: 8px;
-        cursor: pointer;
-        font-size: 16px;
+
+      body.light .link-container .star.favorited {
+        color: #ffa500;
       }
-      /* Keep special colors readable */
+
+      body.light #search,
+      body.light #pw,
+      body.light #sort,
+      body.light #categorySelect,
+      body.light #themeSelect {
+        background: white;
+        color: black;
+        border-color: black;
+      }
+
+      body.light .warning-box {
+        background: white;
+        color: black;
+      }
+
+      body.light .warning-box button {
+        background: white;
+        color: black;
+        border-color: black;
+      }
+
+      body.light #clear-search {
+        color: black;
+      }
+
       body.light .pageb { color: orange; }
       body.light .blocked { color: darkred; }
-      body.light .discord { color: #5865F2; }
-      /* LIGHT */
-      body.light {
-        background: white;
-        color: black;
+      body.light .discord { 
+        color: #5865F2; 
+        border-color: #5865F2; 
       }
-      body.light a {
-        background: white;
-        color: black;
-        border-color: black;
-      }
-      
-      /* NEON */
+
+      /* Neon Theme */
       body.neon {
         background: #0f0f1a;
         color: #39ff14;
       }
-      body.neon a {
+
+      body.neon a,
+      body.neon #submit-btn {
+        background: #0f0f1a;
         color: #39ff14;
         border-color: #39ff14;
       }
-      body.neon .pageb { color: #00eaff; }
-      
-      /* MIDNIGHT */
+
+      body.neon .link-container .star {
+        color: #39ff14;
+      }
+
+      body.neon .link-container .star.favorited {
+        color: #ffd700;
+      }
+
+      body.neon #search,
+      body.neon #pw,
+      body.neon #sort,
+      body.neon #categorySelect,
+      body.neon #themeSelect {
+        background: #0f0f1a;
+        color: #39ff14;
+        border-color: #39ff14;
+      }
+
+      body.neon .warning-box {
+        background: #0f0f1a;
+        border-color: #39ff14;
+        box-shadow: 0 0 20px #39ff14;
+      }
+
+      body.neon .warning-box h2 {
+        color: #39ff14;
+      }
+
+      body.neon .warning-box button {
+        background: #0f0f1a;
+        color: #39ff14;
+        border-color: #39ff14;
+      }
+
+      body.neon #clear-search {
+        color: #39ff14;
+      }
+
+      body.neon #clear-search:hover {
+        color: #00eaff;
+      }
+
+      body.neon .pageb { 
+        color: #00eaff; 
+      }
+
+      body.neon .blocked { 
+        color: #ff1744; 
+      }
+
+      body.neon .discord { 
+        color: #00eaff; 
+        border-color: #00eaff; 
+      }
+
+      body.neon .star {
+        color: #39ff14;
+      }
+
+      body.neon .star.favorited {
+        color: #ffd700;
+      }
+
+      /* Midnight Theme */
       body.midnight {
         background: #020617;
         color: #c7d2fe;
       }
-      body.midnight a {
+
+      body.midnight a,
+      body.midnight #submit-btn {
+        background: #020617;
         color: #c7d2fe;
         border-color: #6366f1;
       }
-      body.midnight .pageb { color: #a5b4fc; }
-      .game-box {
-        position: relative;
-        display: inline-block;
-        margin: 10px;
-        padding: 12px 20px;
-        border: 2px solid white;
-        border-radius: 10px;
-        background-color: black;
-        cursor: pointer;
-        text-align: center;
-      }
-      
-      .game-box a {
-        color: white;
-        text-decoration: none;
-        font-weight: bold;
-      }
-      
-      .game-box .star {
-        position: absolute;
-        top: 5px;
-        right: 8px;
-        font-size: 20px;
-        color: gray;
-        cursor: pointer;
-        transition: transform 0.3s ease, color 0.3s ease;
-      }
-      
-      .game-box .star.favorited {
-        color: gold;
-        transform: scale(1.3);
+
+      body.midnight .link-container .star {
+        color: #6366f1;
       }
 
+      body.midnight .link-container .star.favorited {
+        color: #fbbf24;
+      }
 
+      body.midnight #search,
+      body.midnight #pw,
+      body.midnight #sort,
+      body.midnight #categorySelect,
+      body.midnight #themeSelect {
+        background: #020617;
+        color: #c7d2fe;
+        border-color: #6366f1;
+      }
 
+      body.midnight .warning-box {
+        background: #020617;
+        border-color: #6366f1;
+        box-shadow: 0 0 20px #6366f1;
+      }
+
+      body.midnight .warning-box h2 {
+        color: #a5b4fc;
+      }
+
+      body.midnight .warning-box button {
+        background: #020617;
+        color: #c7d2fe;
+        border-color: #6366f1;
+      }
+
+      body.midnight #clear-search {
+        color: #c7d2fe;
+      }
+
+      body.midnight #clear-search:hover {
+        color: #a5b4fc;
+      }
+
+      body.midnight .pageb { 
+        color: #a5b4fc; 
+      }
+
+      body.midnight .blocked { 
+        color: #f87171; 
+      }
+
+      body.midnight .discord { 
+        color: #818cf8; 
+        border-color: #818cf8; 
+      }
+
+      body.midnight .star {
+        color: #6366f1;
+      }
+
+      body.midnight .star.favorited {
+        color: #fbbf24;
+      }
+
+      /* Mobile Optimizations */
+      @media screen and (max-width: 768px) {
+        .wobble {
+          max-width: 80%;
+          margin: 10px auto;
+        }
+
+        h2 {
+          font-size: 1.3em;
+        }
+
+        .link-container {
+          max-width: 95%;
+        }
+
+        a {
+          font-size: 13px;
+          padding: 10px 35px 10px 12px;
+        }
+
+        .star {
+          font-size: 18px;
+          right: 8px;
+        }
+
+        #sort, #categorySelect, #themeSelect {
+          font-size: 13px;
+          min-width: 110px;
+          padding: 8px 8px;
+        }
+
+        .controls-container {
+          gap: 5px;
+        }
+
+        #pw, #submit-btn {
+          font-size: 16px;
+        }
+
+        .warning-box {
+          padding: 15px;
+        }
+
+        .warning-box h2 {
+          font-size: 1.1em;
+        }
+      }
+
+      @media screen and (max-width: 480px) {
+        .controls-container {
+          flex-direction: column;
+        }
+
+        #sort, #categorySelect, #themeSelect {
+          width: 90%;
+          max-width: 300px;
+        }
+
+        a {
+          font-size: 12px;
+        }
+
+        p {
+          font-size: 0.85em;
+        }
+      }
     </style>
   </head>
-  <body>
+  <body class="dark">
     <canvas id="bg"></canvas>
-    <!-- Unofficial Site Warning -->
+
+    <!-- Warning Overlay -->
     <div id="unofficial-warning">
       <div class="warning-box">
         <h2>⚠ Not an Official Link ⚠</h2>
         <p>
           You are viewing an unofficial copy of this website.<br><br>
-          It can contain in inappropriate content,
-          PLEASE DO NOT REPORT ANYTHING<br><br>
-          An recommended official site is:
+          It can contain inappropriate content, Out Dated Versions, Corrupted Link, etc. 
+          PLEASE DO NOT REPORT ANYTHING, AND ONLY CONTINUE IF NECESSARY<br><br>
+          A recommended official site is:
         </p>
-        <p class="official-link">
-          nolangraysongames.com
-        </p>
+        <p class="official-link">nolangraysongames.com</p>
         <button onclick="closeWarning()">Continue Anyway</button>
       </div>
     </div>
-    <script>
-      let inactivityTimer;
-      const INACTIVITY_LIMIT = 120000; // 2 minutes
-    
-      function resetInactivityTimer() {
-        clearTimeout(inactivityTimer);
-        inactivityTimer = setTimeout(() => {
-          location.reload();
-        }, INACTIVITY_LIMIT);
-      }
-    
-      function startInactivityRefresh() {
-        // Start timer
-        resetInactivityTimer();
-    
-        // Activity listeners
-        ["mousemove", "keydown", "scroll", "click", "touchstart"].forEach(event => {
-          document.addEventListener(event, resetInactivityTimer);
-        });
-      }
-    </script>
-    <script>
-      function checkPassword() {
-        const pw = document.getElementById('pw').value;
-        const error = document.getElementById('pw-error');
-        
-        if (pw === 'Websitegames') {
-          error.style.display = 'none';
-    
-          document.getElementById('password-area').style.display = 'none';
-          const content = document.getElementById('content');
-          content.style.display = 'block';
-          setTimeout(() => content.classList.add('show'), 10);
-    
-          startInactivityRefresh(); // keep your inactivity refresh
-        } else {
-          error.style.display = 'block';
-        }
-      }
-    </script>
-    <script>
-      document.querySelectorAll('a').forEach(a => a.target = '_blank');
-    </script>
-    <script>
-      const officialOrigin = "https://www.nolangraysongames.com";
-    
-      if (window.location.origin !== officialOrigin) {
-        document.getElementById("unofficial-warning").style.display = "flex";
-      }
-    
-      function closeWarning() {
-        document.getElementById("unofficial-warning").style.display = "none";
-      }
-    </script>
-    <script>
-      const canvas = document.getElementById("bg");
-      const ctx = canvas.getContext("2d");
-    
-      function resize() {
-        canvas.width = window.innerWidth;
-        canvas.height = window.innerHeight;
-      }
-      window.addEventListener("resize", resize);
-      resize();
-    
-      const stars = Array.from({ length: 120 }, () => ({
-        x: Math.random() * canvas.width,
-        y: Math.random() * canvas.height,
-        r: Math.random() * 1.5 + 0.5,
-        s: Math.random() * 0.3 + 0.1
-      }));
-    
-      function animate() {
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-        ctx.fillStyle = "white";
-    
-        stars.forEach(star => {
-          star.y += star.s;
-          if (star.y > canvas.height) star.y = 0;
-    
-          ctx.beginPath();
-          ctx.arc(star.x, star.y, star.r, 0, Math.PI * 2);
-          ctx.fill();
-        });
-    
-        requestAnimationFrame(animate);
-      }
-    
-      animate();
-    </script>
-    <script>
-      function searchLinks() {
-        const input = document.getElementById("search").value.toLowerCase();
-        const links = document.querySelectorAll("#content a");
-        const headers = document.querySelectorAll("#content h2, #content h5, #content h6, #content p"); // select all h2 in content
-        
-        // Show/hide links based on search
-        links.forEach(link => {
-          const text = link.textContent.toLowerCase();
-          link.style.display = text.includes(input) ? "inline-block" : "none";
-        });
-      
-        // Show/hide headers based on search input
-        headers.forEach(h => {
-          h.style.display = input ? "none" : "block";
-        });
-      }
-      </script>
-      <script>
-        document.addEventListener("keydown", function (e) {
-          if (e.key === "Escape") {
-            const search = document.getElementById("search");
-              if (search) {
-                search.value = "";
-                searchLinks(); // show all links again
-              }
-          }
-      });
-    </script>
-    <script>
-      function clearSearch() {
-        const search = document.getElementById("search");
-        search.value = "";
-        searchLinks(); // show all links again
-        search.focus(); // optional: focus input after clearing
-      }
-    </script>
 
-    <script>
-      const favoritesKey = "favoriteLinks";
-    
-      function getFavorites() {
-        return JSON.parse(localStorage.getItem(favoritesKey)) || [];
-      }
-    
-      function saveFavorites(favs) {
-        localStorage.setItem(favoritesKey, JSON.stringify(favs));
-      }
-    
-      function toggleFavorite(link) {
-        const href = link.href;
-        let favs = getFavorites();
-        const star = link.nextElementSibling;
-      
-        if (favs.includes(href)) {
-          favs = favs.filter(f => f !== href);
-        } else {
-          favs.push(href);
-      
-          // ⭐ Animate when starring
-          star.classList.add("animate");
-          setTimeout(() => star.classList.remove("animate"), 350);
-        }
-      
-        saveFavorites(favs);
-        renderFavorites();
-        updateStars();
-      }
+    <!-- Title -->
+    <img class="wobble" src="https://nolangraysongames.com/Title.png" alt="Title" onclick="window.location.href='https://www.nolangraysongames.com';" style="cursor:pointer;">
 
-    
-      function renderFavorites() {
-        const favs = getFavorites();
-        const favContainer = document.getElementById("favorites");
-        const title = document.getElementById("favorites-title");
-    
-        favContainer.innerHTML = "";
-    
-        if (favs.length === 0) {
-          title.style.display = "none";
-          return;
-        }
-    
-        title.style.display = "block";
-    
-        favs.forEach(href => {
-          const original = document.querySelector(`a[href="${href}"]`);
-          if (original) {
-            const clone = original.cloneNode(true);
-            clone.querySelector(".star")?.remove();
-            favContainer.appendChild(clone);
-          }
-        });
-      }
-    
-      function updateStars() {
-        const favs = getFavorites();
-    
-        document.querySelectorAll(".star").forEach(star => {
-          const link = star.previousElementSibling;
-          if (favs.includes(link.href)) {
-            star.classList.add("favorited");
-          } else {
-            star.classList.remove("favorited");
-          }
-        });
-      }
-    
-      function addStarsToLinks() {
-        document.querySelectorAll("#content a").forEach(link => {
-          if (link.nextElementSibling?.classList.contains("star")) return;
-    
-          const star = document.createElement("span");
-          star.textContent = "★";
-          star.className = "star";
-          star.onclick = () => toggleFavorite(link);
-    
-          link.after(star);
-        });
-    
-        updateStars();
-      }
-    
-      // Initialize
-      addStarsToLinks();
-      renderFavorites();
-    </script>
-    <script>
-      function showCategory(category) {
-        const categories = document.querySelectorAll(".category");
-        const favTitle = document.getElementById("favorites-title");
-        const favs = document.getElementById("favorites");
-      
-        // Hide everything first
-        categories.forEach(cat => cat.style.display = "none");
-        favTitle.style.display = "none";
-        favs.style.display = "none";
-      
-        if (category === "all") {
-          categories.forEach(cat => cat.style.display = "block");
-          if (favs.children.length > 0) {
-            favTitle.style.display = "block";
-            favs.style.display = "block";
-          }
-        } 
-        else if (category === "favorites") {
-          favTitle.style.display = "block";
-          favs.style.display = "block";
-        } 
-        else {
-          document
-            .querySelector(`.category[data-category="${category}"]`)
-            .style.display = "block";
-        }
-      }
-      </script>
-      <script>
-        function sortLinks() {
-          const sortType = document.getElementById("sort").value;
-          const categories = document.querySelectorAll(".category");
-        
-          categories.forEach(category => {
-            const links = Array.from(category.querySelectorAll("a"));
-        
-            links.sort((a, b) => {
-              const textA = a.textContent.toLowerCase();
-              const textB = b.textContent.toLowerCase();
-        
-              if (sortType === "az") return textA.localeCompare(textB);
-              if (sortType === "za") return textB.localeCompare(textA);
-        
-              if (sortType === "favorites") {
-                const favs = getFavorites();
-                const aFav = favs.includes(a.href);
-                const bFav = favs.includes(b.href);
-        
-                if (aFav === bFav) return textA.localeCompare(textB);
-                return aFav ? -1 : 1;
-              }
-            });
-        
-            // Re-append sorted links (and stars stay attached)
-            links.forEach(link => {
-              const star = link.nextElementSibling;
-              category.appendChild(link);
-              if (star?.classList.contains("star")) {
-                category.appendChild(star);
-              }
-            });
-          });
-        }
-        </script>
-        <script>
-          function saveAndSort() {
-            const sortValue = document.getElementById("sort").value;
-            localStorage.setItem("sortOption", sortValue);
-            sortLinks();
-          }
-          
-          // Load saved sort on page load
-          document.addEventListener("DOMContentLoaded", () => {
-            const savedSort = localStorage.getItem("sortOption");
-            if (savedSort) {
-              document.getElementById("sort").value = savedSort;
-              sortLinks();
-            }
-          });
-          </script>
-          <script>
-            function toggleTheme() {
-              const body = document.body;
-              const btn = document.getElementById("themeToggle");
-            
-              body.classList.toggle("light");
-            
-              if (body.classList.contains("light")) {
-                localStorage.setItem("theme", "light");
-                btn.textContent = "☀️ Light";
-              } else {
-                localStorage.setItem("theme", "dark");
-                btn.textContent = "🌙 Dark";
-              }
-            }
-            
-            // Load saved theme on page load
-            document.addEventListener("DOMContentLoaded", () => {
-              const savedTheme = localStorage.getItem("theme");
-              const btn = document.getElementById("themeToggle");
-            
-              if (savedTheme === "light") {
-                document.body.classList.add("light");
-                btn.textContent = "☀️ Light";
-              } else {
-                btn.textContent = "🌙 Dark";
-              }
-            });
-            </script>
-            <script>
-              function setTheme(theme) {
-                document.body.className = theme;
-                localStorage.setItem("theme", theme);
-              }
-              
-              // Load saved theme
-              document.addEventListener("DOMContentLoaded", () => {
-                const savedTheme = localStorage.getItem("theme") || "dark";
-                document.body.className = savedTheme;
-                document.getElementById("themeSelect").value = savedTheme;
-              });
-              </script>
-    
-    <!-- Password input area -->
-    <img class="wobble" src="Title.png" alt="Title" onclick="window.location.href='https://www.nolangraysongames.com';" style="cursor:pointer;">
+    <!-- Password Area -->
     <div id="password-area">
       <input type="password" id="pw" placeholder="Enter password">
       <button id="submit-btn" onclick="checkPassword()">Enter</button>
-      <p id="pw-error" class="pw-error">
-        ❌ Wrong password
-      </p>
-
+      <p id="pw-error" class="pw-error">❌ Wrong password</p>
     </div>
-    <!-- Hidden content revealed after password -->
+
+    <!-- Main Content -->
     <div id="content">
+      <!-- Search -->
       <div class="search-container">
-        <input type="text" id="search"placeholder="Search links..." onkeyup="searchLinks()"/>
-        <span id="clear-search" onclick="clearSearch()">x</span>
+        <input type="text" id="search" placeholder="Search links..." onkeyup="searchLinks()"/>
+        <span id="clear-search" onclick="clearSearch()">×</span>
       </div>
-      <div style="text-align:center; margin-bottom:15px;">
+
+      <!-- Controls Container -->
+      <div class="controls-container">
+        <select id="categorySelect" onchange="showCategory(this.value)">
+          <option value="all">📂 All Categories</option>
+          <option value="favorites">⭐ Favorites</option>
+          <option value="websites">🌐 Websites</option>
+          <option value="games">🎮 Games</option>
+          <option value="eaglercraft">⛏ Eaglercraft</option>
+          <option value="other">📦 Other</option>
+        </select>
+
         <select id="sort" onchange="saveAndSort()">
-          <option value="az">A–Z</option>
-          <option value="za">Z–A</option>
+          <option value="az">🔤 A–Z</option>
+          <option value="za">🔤 Z–A</option>
           <option value="favorites">⭐ Favorites first</option>
         </select>
+
+        <select id="themeSelect" onchange="setTheme(this.value)">
+          <option value="dark">🌙 Dark</option>
+          <option value="neon">🌈 Neon</option>
+          <option value="midnight">🌌 Midnight</option>
+        </select>
       </div>
-      <div id="tabs">
-        <button onclick="showCategory('all')">All</button>
-        <button onclick="showCategory('favorites')">⭐ Favorites</button>
-        <button onclick="showCategory('websites')">🌐 Websites</button>
-        <button onclick="showCategory('games')">🎮 Games</button>
-        <button onclick="showCategory('eaglercraft')">⛏ Eaglercraft</button>
-        <button onclick="showCategory('other')">📦 Other</button>
-      </div>
-      <select id="themeSelect" onchange="setTheme(this.value)">
-        <option value="dark">🌙 Dark</option>
-        <option value="neon">🌈 Neon</option>
-        <option value="midnight">🌌 Midnight</option>
-      </select>
+
+      <!-- Favorites Section -->
       <h2 id="favorites-title" style="display:none;">⭐ Favorites</h2>
       <div id="favorites"></div>
 
+      <!-- Websites Category -->
       <div class="category" data-category="websites">
         <h2>Websites</h2>
         <a href="https://helios-browser.vercel.app/?sca_esv=91bd149827a5c7e1&amp;ie=ISO-8859-1&amp;q=duck+the+dick+layer&amp;oq=&amp;aqs=">Helios Browser #1</a>
@@ -848,14 +757,14 @@
         <a class="pageb" href="https://html-2-11096731.codehs.me/">Blox Games</a>
         <a class="pageb" href="https://s3.amazonaws.com/fernisbest/index.html">Fern (virus)</a>
         <a class="pageb" href="https://useful-websites-11384316.codehs.me/fun-games-page.html">Fun Games</a>
-        <a class="pageb" href="https://unlocked-14104483.codehs.me/links.html#">Unblocked  Web #1</a>
-        <a class="pageb" href="https://looker-drive-15229361.codehs.me/index.html"> Greeni's Unblocked Games (BOOSIE67)</a>
-        <a href="https://talongames-15869241.codehs.me/projects">Talon Games </a>
+        <a class="pageb" href="https://unlocked-14104483.codehs.me/links.html#">Unblocked Web #1</a>
+        <a class="pageb" href="https://looker-drive-15229361.codehs.me/index.html">Greeni's Unblocked Games (BOOSIE67)</a>
+        <a href="https://talongames-15869241.codehs.me/projects">Talon Games</a>
         <a class="pageb" href="https://superdupercool.codehs.me/">Otto's Site</a>
         <a href="https://untitledsite2point02.codehs.me/">Untitled 2.0</a>
         <a class="pageb" href="https://private-server-v6-maybe-16143815.codehs.me/">Private Server</a>
         <a href="https://hype-13705391.codehs.me/">Hyper Unblocker</a>
-        <a href="https://gamesite-2-9809323.codehs.me/game.html"> Gaming Zone</a>
+        <a href="https://gamesite-2-9809323.codehs.me/game.html">Gaming Zone</a>
         <a class="blocked" href="https://superhardalgebra.codehs.me/">Galactic</a>
         <a class="blocked" href="https://nexus2-15144648.codehs.me/">Nexus #1</a>
         <a class="blocked" href="https://nexus-1-16525472.codehs.me/">Nexus #2</a>
@@ -875,14 +784,14 @@
         <a href="https://quiz-math-10.us/">Quiz Math 10</a>
         <a href="https://www.toplocaltours.com/">Web #1</a>
         <a href="https://www.candofinance.com/">Web #2</a>
-        <a href="aboutblank.html">HTML About:Blank Lancher</a>
-        <a href="https://smslearning.codehs.me/"> Smash karts </a>
+        <a href="aboutblank.html">HTML About:Blank Launcher</a>
+        <a href="https://smslearning.codehs.me/">Smash karts</a>
         <a href="https://oregontrail.ws/games/the-oregon-trail-deluxe/play/">Oregon Trail Game</a>
         <a href="https://warehouse.galaxydve.com/content/5078462/bin/index.html">Subway Surfers</a>
         <a href="https://s3-eu-west-1.amazonaws.com/apps.playcanvas.com/xMpnwMbu/index.html">Zebawl</a>
         <a href="https://s3-eu-west-1.amazonaws.com/apps.playcanvas.com/aOZ5lcoo/index.html">Orbital survival</a>
         <a href="https://www.byronknoll.com/earth.html">Squishy Earth</a>
-        <a class="pageb" href="https://3d-shooter-15153456.com"> Fire 3D Shooter </a>
+        <a class="pageb" href="https://3d-shooter-15153456.com">Fire 3D Shooter</a>
         <a href="https://mhsdevildogs-12321908.codehs.me/">Error</a>
         <a href="https://star-13979722.codehs.me/">Xer Unblocked hub</a>
         <a href="https://new-sandbox-program-11-14372996.codehs.me/index.html">Tiny Fishing</a>
@@ -908,28 +817,27 @@
         <a href="https://dogeub-sooty.vercel.app/">Doge</a>
         <a href="https://course.how.laurengillett.com/">Utopia #1</a>
         <a href="https://study.info.scallex.net/">Utopia #2</a>
-        <a class="pageb" href="https://securly.com.mtomtech.co.kr/"> Study.com (Roblox)</a>
+        <a class="pageb" href="https://securly.com.mtomtech.co.kr/">Study.com (Roblox)</a>
         <a class="pageb" href="https://rblx-7918337.codehs.me/">Roblox</a>
       </div>
-      
+
+      <!-- Games Category -->
       <div class="category" data-category="games">
         <h2>Games</h2>
         <a href="COMMENTS.html">Comments (gn-math)</a>
         <a href="BadParentingone.html">Bad Parenting 1</a>
         <a href="BaldisBasicsPlus.html">Baldi's Basics Plus</a>
         <a href="BendyandtheInkMachine.html">Bendy and the Ink Machine</a>
-        <a href=""></a>
-        <a href=""></a>
-        <a href=""></a>
       </div>
 
+      <!-- Eaglercraft Category -->
       <div class="category" data-category="eaglercraft">
-        <h2> Eaglercraft </h2>
+        <h2>Eaglercraft</h2>
         <a href="https://new-sandbox-program-43-16834996.codehs.me/index.html">Eaglercraft Indev</a>
         <a href="https://new-sandbox-program-42-16834902.codehs.me/index.html">Eaglercraft Beta 1.2.6</a>
         <a href="https://new-sandbox-program-41-16834838.codehs.me/index.html">Eaglercraft Beta 1.3</a>
         <a href="https://new-sandbox-program-40-16834750.codehs.me/index.html">Eaglercraft Beta 1.7.3</a>
-        <a href="https://new-sandbox-program-38-16834232.codehs.me/index.html">Eaglercraft 1.5.2 </a>
+        <a href="https://new-sandbox-program-38-16834232.codehs.me/index.html">Eaglercraft 1.5.2</a>
         <a href="https://codehs.com/uploads/d88866b9c3eb083b43dac1a94e54d179">EaglercraftX 1.8</a>
         <a href="https://codehs.com/uploads/1134b7177ae8e97986729eb34a6ce245">EaglercraftL 1.9.4</a>
         <a href="https://codehs.com/uploads/37053412754d02c9f1a17740fc92a7c8">EaglercraftX 1.11.2</a>
@@ -937,21 +845,380 @@
         <a class="blocked" href="https://new-sandbox-program-39-16834383.codehs.me/index.html">EaglercraftL 1.21.4</a>
       </div>
 
+      <!-- Other Category -->
       <div class="category" data-category="other">
         <h2>Other</h2>
         <a href="https://drive.google.com/file/d/1nidsUc8iekU_k7Myid8rveo9-cUK0g0h/view?usp=drive_open">Rules</a>
         <a href="https://forms.gle/cJcDpLaSAm1NNVsR8">Report Form</a>
-        <a href="https://drive.google.com/file/d/1tYhAuR_AHav3PDdVl0CYvyrqd-3iEM1j/view">Summerie Of The Rules</a>
-        <a href="https://new-sandbox-program-37-16834106.codehs.me/index.html" target="_blank" onclick="window.open('about:blank').location.href=this.href; return false;">Debug</a>
+        <a href="https://drive.google.com/file/d/1tYhAuR_AHav3PDdVl0CYvyrqd-3iEM1j/view">Summary Of The Rules</a>
+        <a href="test.html">Beta Page</a>
         <a href="https://github.com/NolanBetter/nolanbetter.github.io">Fork On Github</a>
-        <a href="https://www.nolangraysongames.com/">Oficial Link</a>
+        <a href="https://www.nolangraysongames.com/">Official Link</a>
         <a class="discord" href="https://discord.gg/nNCWgRJZ7v">Discord</a>
-        <a href="test.html">Test Page</a>
       </div>
-      
-      <p>On November 13th, 2025 at 12:36pm Grayson Barnes And Nolan Boyer Made A Promise To Never Share This Website With Anyone Or Share Any Links on here until 2030. On November 17,2025 at 7:43am Nolan Boyer And Joseph Dransfield Promised to not share any links on this website With anyone except for Grayson Barnes until 2030.All Other user that join agree to the rules found on the Rules page.</p>
-      <h6>Last Updated On 12/16/25 By Nolan Boyer Via Github.</h6>
-      <img class="smallimg" src="Logo.png" alt="Logo">
+
+      <!-- Footer -->
+      <p>On November 13th, 2025 at 12:36pm Grayson Barnes And Nolan Boyer Made A Promise To Never Share This Website With Anyone Or Share Any Links on here until 2030. On November 17, 2025 at 7:43am Nolan Boyer And Joseph Dransfield Promised to not share any links on this website With anyone except for Grayson Barnes until 2030. All Other users that join agree to the rules found on the Rules page.</p>
+      <h6>Last Updated On 12/31/25 By Nolan Boyer Via Github.</h6>
+      <img class="smallimg" src="https://www.nolangraysongames.com/Logo.png" alt="Logo">
     </div>
+
+    <script>
+      document.addEventListener('DOMContentLoaded', function() {
+        
+        // ============================================================
+        // LOCAL STORAGE RESET (REMOVE THIS SECTION IN THE FUTURE)
+        // ============================================================
+        // Uncomment the line below to clear all saved data on page load
+        // localStorage.clear();
+        // ============================================================
+        
+        // Inactivity Timer
+        let inactivityTimer;
+        const INACTIVITY_LIMIT = 120000; // 2 minutes
+
+        function resetInactivityTimer() {
+          clearTimeout(inactivityTimer);
+          inactivityTimer = setTimeout(() => location.reload(), INACTIVITY_LIMIT);
+        }
+
+        function startInactivityRefresh() {
+          resetInactivityTimer();
+          ["mousemove", "keydown", "scroll", "click", "touchstart"].forEach(event => {
+            document.addEventListener(event, resetInactivityTimer);
+          });
+        }
+
+        // Password Check
+        window.checkPassword = function() {
+          const pw = document.getElementById('pw');
+          const error = document.getElementById('pw-error');
+          
+          if (!pw || !error) return;
+          
+          if (pw.value === 'Websitegames') {
+            error.style.display = 'none';
+            document.getElementById('password-area').style.display = 'none';
+            const content = document.getElementById('content');
+            content.style.display = 'block';
+            setTimeout(() => content.classList.add('show'), 10);
+            startInactivityRefresh();
+            initializeAfterPassword();
+          } else {
+            error.style.display = 'block';
+          }
+        };
+
+        // Initialize Features After Password
+        function initializeAfterPassword() {
+          document.querySelectorAll('a').forEach(a => a.target = '_blank');
+          addStarsToLinks();
+          renderFavorites();
+          updateStars();
+        }
+
+        // Unofficial Warning Check
+        const officialOrigins = [
+          "https://www.nolangraysongames.com",
+          "https://nolansandgraysonsgames.w3spaces.com"
+          "https://nolanbetter.github.io"
+          "https://nolanbetter-github-io.vercel.app"
+          "https://mathisfun-lilac.vercel.app"
+          "https://clevercom-iota.vercel.app"
+          "https://nolangraysongames-0dfson9ko.edgeone.app/"
+        ];
+        
+        if (!officialOrigins.includes(window.location.origin)) {
+          const warning = document.getElementById("unofficial-warning");
+          if (warning) warning.style.display = "flex";
+        }
+
+
+        window.closeWarning = function() {
+          const warning = document.getElementById("unofficial-warning");
+          if (warning) warning.style.display = "none";
+        };
+
+        // Canvas Star Animation
+        const canvas = document.getElementById("bg");
+        if (canvas) {
+          const ctx = canvas.getContext("2d");
+
+          function resize() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+          }
+          window.addEventListener("resize", resize);
+          resize();
+
+          const stars = Array.from({ length: 120 }, () => ({
+            x: Math.random() * canvas.width,
+            y: Math.random() * canvas.height,
+            r: Math.random() * 1.5 + 0.5,
+            s: Math.random() * 0.3 + 0.1
+          }));
+
+          function animate() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            ctx.fillStyle = "white";
+            stars.forEach(star => {
+              star.y += star.s;
+              if (star.y > canvas.height) star.y = 0;
+              ctx.beginPath();
+              ctx.arc(star.x, star.y, star.r, 0, Math.PI * 2);
+              ctx.fill();
+            });
+            requestAnimationFrame(animate);
+          }
+          animate();
+        }
+
+        // Search Functionality
+        window.searchLinks = function() {
+          const input = document.getElementById("search");
+          if (!input) return;
+          
+          const value = input.value.toLowerCase();
+          const linkContainers = document.querySelectorAll("#content .link-container");
+          const headers = document.querySelectorAll("#content h2, #content h5, #content h6, #content p");
+          
+          linkContainers.forEach(container => {
+            const link = container.querySelector("a");
+            if (link) {
+              const text = link.textContent.toLowerCase();
+              container.style.display = text.includes(value) ? "inline-block" : "none";
+            }
+          });
+          
+          headers.forEach(h => h.style.display = value ? "none" : "block");
+        };
+
+        // Clear Search
+        window.clearSearch = function() {
+          const search = document.getElementById("search");
+          if (search) {
+            search.value = "";
+            searchLinks();
+            search.focus();
+          }
+        };
+
+        // Escape Key to Clear Search
+        document.addEventListener("keydown", function(e) {
+          if (e.key === "Escape") clearSearch();
+        });
+
+        // Favorites System
+        const favoritesKey = "favoriteLinks";
+
+        function getFavorites() {
+          return JSON.parse(localStorage.getItem(favoritesKey)) || [];
+        }
+
+        function saveFavorites(favs) {
+          localStorage.setItem(favoritesKey, JSON.stringify(favs));
+        }
+
+        window.toggleFavorite = function(link) {
+          const href = link.href;
+          let favs = getFavorites();
+          const container = link.closest('.link-container');
+          const star = container ? container.querySelector('.star') : null;
+
+          if (favs.includes(href)) {
+            favs = favs.filter(f => f !== href);
+          } else {
+            favs.push(href);
+            if (star) {
+              star.classList.add("animate");
+              setTimeout(() => star.classList.remove("animate"), 350);
+            }
+          }
+
+          saveFavorites(favs);
+          renderFavorites();
+          updateStars();
+        };
+
+        function renderFavorites() {
+          const favs = getFavorites();
+          const favContainer = document.getElementById("favorites");
+          const title = document.getElementById("favorites-title");
+
+          if (!favContainer || !title) return;
+          favContainer.innerHTML = "";
+
+          if (favs.length === 0) {
+            title.style.display = "none";
+            return;
+          }
+
+          title.style.display = "block";
+          favs.forEach(href => {
+            const original = document.querySelector(`a[href="${href}"]`);
+            if (original) {
+              const clone = original.cloneNode(true);
+              const wrapper = document.createElement("div");
+              wrapper.className = "link-container";
+              wrapper.appendChild(clone);
+              favContainer.appendChild(wrapper);
+            }
+          });
+        }
+
+        function updateStars() {
+          const favs = getFavorites();
+          document.querySelectorAll(".star").forEach(star => {
+            const container = star.closest('.link-container');
+            if (container) {
+              const link = container.querySelector("a");
+              if (link && favs.includes(link.href)) {
+                star.classList.add("favorited");
+              } else {
+                star.classList.remove("favorited");
+              }
+            }
+          });
+        }
+
+        function addStarsToLinks() {
+          document.querySelectorAll("#content a").forEach(link => {
+            // Skip if already wrapped
+            if (link.parentElement.classList.contains('link-container')) return;
+
+            // Create wrapper
+            const wrapper = document.createElement("div");
+            wrapper.className = "link-container";
+            
+            // Insert wrapper before link
+            link.parentNode.insertBefore(wrapper, link);
+            
+            // Move link into wrapper
+            wrapper.appendChild(link);
+
+            // Create and add star
+            const star = document.createElement("span");
+            star.textContent = "★";
+            star.className = "star";
+            star.onclick = (e) => {
+              e.preventDefault();
+              e.stopPropagation();
+              toggleFavorite(link);
+            };
+            wrapper.appendChild(star);
+          });
+          updateStars();
+        }
+
+        // Category Filtering
+        window.showCategory = function(category) {
+          const categories = document.querySelectorAll(".category");
+          const favTitle = document.getElementById("favorites-title");
+          const favs = document.getElementById("favorites");
+
+          if (!favTitle || !favs) return;
+          categories.forEach(cat => cat.style.display = "none");
+          favTitle.style.display = "none";
+          favs.style.display = "none";
+
+          if (category === "all") {
+            categories.forEach(cat => cat.style.display = "block");
+            if (favs.children.length > 0) {
+              favTitle.style.display = "block";
+              favs.style.display = "block";
+            }
+          } else if (category === "favorites") {
+            favTitle.style.display = "block";
+            favs.style.display = "block";
+          } else {
+            const cat = document.querySelector(`.category[data-category="${category}"]`);
+            if (cat) cat.style.display = "block";
+          }
+        };
+
+        // Sorting
+        window.sortLinks = function() {
+          const sortSelect = document.getElementById("sort");
+          if (!sortSelect) return;
+
+          const sortType = sortSelect.value;
+          const categories = document.querySelectorAll(".category");
+
+          categories.forEach(category => {
+            const links = Array.from(category.querySelectorAll("a"));
+            links.sort((a, b) => {
+              const textA = a.textContent.toLowerCase();
+              const textB = b.textContent.toLowerCase();
+
+              if (sortType === "az") return textA.localeCompare(textB);
+              if (sortType === "za") return textB.localeCompare(textA);
+
+              if (sortType === "favorites") {
+                const favs = getFavorites();
+                const aFav = favs.includes(a.href);
+                const bFav = favs.includes(b.href);
+                if (aFav === bFav) return textA.localeCompare(textB);
+                return aFav ? -1 : 1;
+              }
+            });
+
+            links.forEach(link => {
+              const star = link.nextElementSibling;
+              category.appendChild(link);
+              if (star?.classList.contains("star")) category.appendChild(star);
+            });
+          });
+        };
+
+        window.saveAndSort = function() {
+          const sortSelect = document.getElementById("sort");
+          if (!sortSelect) return;
+          localStorage.setItem("sortOption", sortSelect.value);
+          sortLinks();
+        };
+
+        // Load Saved Sort
+        const savedSort = localStorage.getItem("sortOption");
+        if (savedSort) {
+          const sortSelect = document.getElementById("sort");
+          if (sortSelect) {
+            sortSelect.value = savedSort;
+            sortLinks();
+          }
+        }
+
+        // Theme System
+        window.setTheme = function(theme) {
+          // Remove all theme classes first
+          document.body.classList.remove('dark', 'light', 'neon', 'midnight');
+          
+          // Add the selected theme class
+          document.body.classList.add(theme);
+          
+          // Save to localStorage
+          localStorage.setItem("theme", theme);
+          
+          // Force update of select element
+          const themeSelect = document.getElementById("themeSelect");
+          if (themeSelect) {
+            themeSelect.value = theme;
+          }
+        };
+
+        // Load Saved Theme
+        const savedTheme = localStorage.getItem("theme") || "dark";
+        
+        // Apply theme immediately
+        document.body.classList.remove('dark', 'light', 'neon', 'midnight');
+        document.body.classList.add(savedTheme);
+        
+        // Update select element
+        const themeSelect = document.getElementById("themeSelect");
+        if (themeSelect) {
+          themeSelect.value = savedTheme;
+        }
+
+      });
+    </script>
   </body>
 </html>
