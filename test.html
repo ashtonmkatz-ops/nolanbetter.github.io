@@ -1,0 +1,827 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Nolan's And Grayson's Games</title>
+    <link rel="icon" href="Logo.png" type="image/x-icon">
+    <style>
+      * {
+        transition: background-color 0.4s ease, color 0.4s ease, border-color 0.4s ease;
+      }
+
+      body {
+        text-align: center;
+        background-color: black;
+        color: white;
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+      }
+
+      /* Links */
+      a {
+        display: inline-block;
+        padding: 10px 20px;
+        background-color: black;
+        color: white; 
+        border: 2px solid white;
+        text-decoration: none;
+        border-radius: 5px;
+        cursor: pointer;
+        text-align: center;
+        transition: transform 0.2s ease;
+      }
+
+      a:hover {
+        transform: scale(1.2);
+      }
+
+      /* Text Styles */
+      h2 {
+        text-decoration: underline;
+      }
+
+      .blocked {
+        color: red;
+        text-decoration: line-through;
+      }
+
+      .pageb {
+        color: yellow;
+      }
+
+      .discord {
+        color: blue; 
+        border-color: blue;
+      }
+
+      .smallimg {
+        width: 50px;
+        float: left;
+      }
+
+      /* Password Area */
+      #password-area {
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        z-index: 100;
+      }
+
+      #pw {
+        font-size: 24px;
+        padding: 10px;
+        width: 300px;
+        background-color: black;
+        color: white;
+        border: 2px solid white;
+        text-align: center;
+        border-radius: 10px;
+      }
+
+      #submit-btn {
+        font-size: 24px;
+        padding: 10px 20px;
+        margin-left: 10px;
+        background-color: black;
+        color: white;
+        border: 2px solid white;
+        cursor: pointer;
+        border-radius: 10px;
+        transition: transform 0.25s ease;
+      }
+
+      #submit-btn:hover {
+        transform: scale(1.2);
+      }
+
+      .pw-error {
+        display: none;
+        color: red;
+        font-size: 18px;
+        margin-top: 12px;
+        text-align: center;
+      }
+
+      /* Content Area */
+      #content {
+        margin-top: 20px;
+        opacity: 0;
+        transition: opacity 1s ease-in;
+        display: none;
+      }
+
+      #content.show {
+        display: block;
+        opacity: 1;
+      }
+
+      /* Wobble Animation */
+      .wobble {
+        display: inline-block;
+        cursor: pointer;
+        animation: wobble 1s infinite;
+      }   
+
+      .wobble:active {
+        animation: bounce 1s;
+      }
+
+      @keyframes wobble {
+        0%, 100% { transform: rotate(0deg); }
+        25%, 75% { transform: rotate(-2deg); }
+        50% { transform: rotate(2deg); }
+      }
+
+      @keyframes bounce {
+        0%, 100% { transform: scale(1); }
+        30% { transform: scale(1.2); }
+        50% { transform: scale(0.9); }
+        70% { transform: scale(1.1); }
+      }
+
+      /* Warning Overlay */
+      #unofficial-warning {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.85);
+        display: none;
+        align-items: center;
+        justify-content: center;
+        z-index: 9999;
+      }
+
+      .warning-box {
+        background: black;
+        border: 2px solid red;
+        padding: 30px;
+        max-width: 500px;
+        text-align: center;
+        border-radius: 15px;
+        box-shadow: 0 0 20px red;
+      }
+
+      .warning-box h2 {
+        color: red;
+      }
+
+      .official-link {
+        color: yellow;
+        word-break: break-all;
+      }
+
+      .warning-box button {
+        margin-top: 20px;
+        padding: 10px 25px;
+        font-size: 18px;
+        background: black;
+        color: white;
+        border: 2px solid white;
+        border-radius: 10px;
+        cursor: pointer;
+      }
+
+      .warning-box button:hover {
+        transform: scale(1.1);
+      }
+
+      /* Background Canvas */
+      #bg {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: -1;
+        background: black;
+      }
+
+      /* Search Box */
+      .search-container {
+        position: relative;
+        width: 300px;
+        margin: 15px auto;
+        text-align: center;
+      }
+
+      #search {
+        width: 100%;
+        padding: 10px 35px 10px 10px;
+        font-size: 18px;
+        background-color: black;
+        color: white;
+        border: 2px solid white;
+        border-radius: 10px;
+        text-align: center;
+      }
+
+      #clear-search {
+        position: absolute;
+        right: 10px;
+        top: 50%;
+        transform: translateY(-50%);
+        cursor: pointer;
+        color: white;
+        font-size: 20px;
+        user-select: none;
+      }
+
+      #clear-search:hover {
+        color: red;
+      }
+
+      /* Stars/Favorites */
+      .star {
+        cursor: pointer;
+        color: gray;
+        margin-left: 8px;
+        font-size: 18px;
+      }
+
+      .star.favorited {
+        color: gold;
+      }
+
+      @keyframes starPop {
+        0%, 100% { transform: scale(1); text-shadow: none; }
+        50% { transform: scale(1.6); text-shadow: 0 0 10px gold; }
+      }
+
+      .star.animate {
+        animation: starPop 0.35s ease;
+      }
+
+      /* Tabs */
+      #tabs {
+        text-align: center;
+        margin-bottom: 20px;
+      }
+
+      #tabs button {
+        background: black;
+        color: white;
+        border: 2px solid white;
+        margin: 5px;
+        padding: 8px 14px;
+        border-radius: 10px;
+        cursor: pointer;
+      }
+
+      #tabs button:hover {
+        transform: scale(1.1);
+      }
+
+      /* Sort and Theme Selectors */
+      #sort, #themeSelect {
+        background: black;
+        color: white;
+        border: 2px solid white;
+        padding: 6px 10px;
+        border-radius: 8px;
+        font-size: 16px;
+        cursor: pointer;
+      }
+
+      /* Theme Styles */
+      body.light {
+        background: white;
+        color: black;
+      }
+
+      body.light a {
+        background: white;
+        color: black;
+        border-color: black;
+      }
+
+      body.light .pageb { color: orange; }
+      body.light .blocked { color: darkred; }
+      body.light .discord { color: #5865F2; border-color: #5865F2; }
+      body.light #search, body.light #sort, body.light #themeSelect {
+        background: white;
+        color: black;
+        border-color: black;
+      }
+
+      body.neon {
+        background: #0f0f1a;
+        color: #39ff14;
+      }
+
+      body.neon a {
+        color: #39ff14;
+        border-color: #39ff14;
+      }
+
+      body.neon .pageb { color: #00eaff; }
+
+      body.midnight {
+        background: #020617;
+        color: #c7d2fe;
+      }
+
+      body.midnight a {
+        color: #c7d2fe;
+        border-color: #6366f1;
+      }
+
+      body.midnight .pageb { color: #a5b4fc; }
+    </style>
+  </head>
+  <body>
+    <canvas id="bg"></canvas>
+
+    <!-- Warning Overlay -->
+    <div id="unofficial-warning">
+      <div class="warning-box">
+        <h2>⚠ Not an Official Link ⚠</h2>
+        <p>
+          You are viewing an unofficial copy of this website.<br><br>
+          It can contain inappropriate content,
+          PLEASE DO NOT REPORT ANYTHING<br><br>
+          A recommended official site is:
+        </p>
+        <p class="official-link">nolangraysongames.com</p>
+        <button onclick="closeWarning()">Continue Anyway</button>
+      </div>
+    </div>
+
+    <!-- Title -->
+    <img class="wobble" src="Title.png" alt="Title" onclick="window.location.href='https://www.nolangraysongames.com';" style="cursor:pointer;">
+
+    <!-- Password Area -->
+    <div id="password-area">
+      <input type="password" id="pw" placeholder="Enter password">
+      <button id="submit-btn" onclick="checkPassword()">Enter</button>
+      <p id="pw-error" class="pw-error">❌ Wrong password</p>
+    </div>
+
+    <!-- Main Content -->
+    <div id="content">
+      <!-- Search -->
+      <div class="search-container">
+        <input type="text" id="search" placeholder="Search links..." onkeyup="searchLinks()"/>
+        <span id="clear-search" onclick="clearSearch()">×</span>
+      </div>
+
+      <!-- Sort Dropdown -->
+      <div style="text-align:center; margin-bottom:15px;">
+        <select id="sort" onchange="saveAndSort()">
+          <option value="az">A–Z</option>
+          <option value="za">Z–A</option>
+          <option value="favorites">⭐ Favorites first</option>
+        </select>
+      </div>
+
+      <!-- Category Tabs -->
+      <div id="tabs">
+        <button onclick="showCategory('all')">All</button>
+        <button onclick="showCategory('favorites')">⭐ Favorites</button>
+        <button onclick="showCategory('websites')">🌐 Websites</button>
+        <button onclick="showCategory('games')">🎮 Games</button>
+        <button onclick="showCategory('eaglercraft')">⛏ Eaglercraft</button>
+        <button onclick="showCategory('other')">📦 Other</button>
+      </div>
+
+      <!-- Theme Selector -->
+      <select id="themeSelect" onchange="setTheme(this.value)">
+        <option value="dark">🌙 Dark</option>
+        <option value="neon">🌈 Neon</option>
+        <option value="midnight">🌌 Midnight</option>
+      </select>
+
+      <!-- Favorites Section -->
+      <h2 id="favorites-title" style="display:none;">⭐ Favorites</h2>
+      <div id="favorites"></div>
+
+      <!-- Websites Category -->
+      <div class="category" data-category="websites">
+        <h2>Websites</h2>
+        <a href="https://helios-browser.vercel.app/?sca_esv=91bd149827a5c7e1&amp;ie=ISO-8859-1&amp;q=duck+the+dick+layer&amp;oq=&amp;aqs=">Helios Browser #1</a>
+        <a href="https://helios-main-4-16277712.codehs.me/">Helios Browser #2</a>
+        <a href="https://secret-14830781.codehs.me/">Helios Browser #3</a>
+        <a href="https://helios-main-1-16003298.codehs.me/">Helios Browser #4</a>
+        <a href="https://helios-main-8-16277735.codehs.me/">Helios Browser #5</a>
+        <a href="https://helios-main-1-17218349.codehs.me/index.html">Helios Browser #6</a>
+        <a href="https://helios-main-2-17218409.codehs.me/index.html">Helios Browser #7</a>
+        <a href="https://helios-main-3-17218419.codehs.me/index.html">Helios Browser #8</a>
+        <a href="https://helios-main-4-17218430.codehs.me/index.html">Helios Browser #9</a>
+        <a href="https://helios-main-5-17218433.codehs.me/index.html">Helios Browser #10</a>
+        <a class="pageb" href="https://math-help-10477068.codehs.me/proxies.html">Math Help</a>
+        <a class="blocked" href="https://falcon-hub-2-14106850.codehs.me/">Falcon Hub</a>
+        <a class="pageb" href="https://web-13738023.codehs.me/">Cool Web Browser</a>
+        <a href="https://new-sandbox-program-8-16195494.codehs.me/">gn-whoknows</a>
+        <a class="pageb" href="https://gamerscorner.codehs.me/">Gamers Corner</a>
+        <a class="pageb" href="https://sigma-drift2-14009523.codehs.me/">Sigma Drift</a>
+        <a class="pageb" href="https://html-6835466.codehs.me/games.html">Max D Games</a>
+        <a class="pageb" href="https://wise-educational-tools-10184503.codehs.me/games.html">Wise Educational tools</a>
+        <a href="https://epicmathgames-11368087.codehs.me/">Epic math games</a>
+        <a class="pageb" href="https://html-2-11096731.codehs.me/">Blox Games</a>
+        <a class="pageb" href="https://s3.amazonaws.com/fernisbest/index.html">Fern (virus)</a>
+        <a class="pageb" href="https://useful-websites-11384316.codehs.me/fun-games-page.html">Fun Games</a>
+        <a class="pageb" href="https://unlocked-14104483.codehs.me/links.html#">Unblocked Web #1</a>
+        <a class="pageb" href="https://looker-drive-15229361.codehs.me/index.html">Greeni's Unblocked Games (BOOSIE67)</a>
+        <a href="https://talongames-15869241.codehs.me/projects">Talon Games</a>
+        <a class="pageb" href="https://superdupercool.codehs.me/">Otto's Site</a>
+        <a href="https://untitledsite2point02.codehs.me/">Untitled 2.0</a>
+        <a class="pageb" href="https://private-server-v6-maybe-16143815.codehs.me/">Private Server</a>
+        <a href="https://hype-13705391.codehs.me/">Hyper Unblocker</a>
+        <a href="https://gamesite-2-9809323.codehs.me/game.html">Gaming Zone</a>
+        <a class="blocked" href="https://superhardalgebra.codehs.me/">Galactic</a>
+        <a class="blocked" href="https://nexus2-15144648.codehs.me/">Nexus #1</a>
+        <a class="blocked" href="https://nexus-1-16525472.codehs.me/">Nexus #2</a>
+        <a class="blocked" href="https://html-2-16716466.codehs.me/">Nexus #3</a>
+        <a href="https://nexusos-15319152.codehs.me/">TalonOS</a>
+        <a href="https://eliteforever-15439918.codehs.me/index.html">Elite Games</a>
+        <a class="blocked" href="https://green-juce-15899531.codehs.me/">Green Juce</a>
+        <a class="pageb" href="https://funny-cheese-toaster-16543182.codehs.me/">toaster</a>
+        <a class="pageb" href="https://story-network-math-16177875.codehs.me/">Story Network</a>
+        <a href="https://76776-16256340.codehs.me/">Classlink</a>
+        <a href="https://yn-dayton-16219146.codehs.me/">YN-dayton</a>
+        <a href="https://html-14358861.codehs.me/Games/gameindex.html">Unknown</a>
+        <a href="https://html-14358861.codehs.me/index.html">Unknown #2</a>
+        <a class="pageb" href="https://jacobpediacodehsme-11898672.codehs.me/Jacobpedia-games-unblocker.html">Jacobpedia Games unblocker</a>
+        <a class="pageb" href="https://new-sandbox-program-6-6497977.codehs.me/">Login</a>
+        <a class="pageb" href="https://valuabletime-8462876.codehs.me/edutool.html">Google Classroom</a>
+        <a href="https://quiz-math-10.us/">Quiz Math 10</a>
+        <a href="https://www.toplocaltours.com/">Web #1</a>
+        <a href="https://www.candofinance.com/">Web #2</a>
+        <a href="aboutblank.html">HTML About:Blank Launcher</a>
+        <a href="https://smslearning.codehs.me/">Smash karts</a>
+        <a href="https://oregontrail.ws/games/the-oregon-trail-deluxe/play/">Oregon Trail Game</a>
+        <a href="https://warehouse.galaxydve.com/content/5078462/bin/index.html">Subway Surfers</a>
+        <a href="https://s3-eu-west-1.amazonaws.com/apps.playcanvas.com/xMpnwMbu/index.html">Zebawl</a>
+        <a href="https://s3-eu-west-1.amazonaws.com/apps.playcanvas.com/aOZ5lcoo/index.html">Orbital survival</a>
+        <a href="https://www.byronknoll.com/earth.html">Squishy Earth</a>
+        <a class="pageb" href="https://3d-shooter-15153456.com">Fire 3D Shooter</a>
+        <a href="https://mhsdevildogs-12321908.codehs.me/">Error</a>
+        <a href="https://star-13979722.codehs.me/">Xer Unblocked hub</a>
+        <a href="https://new-sandbox-program-11-14372996.codehs.me/index.html">Tiny Fishing</a>
+        <a href="https://playspent.org/">Play Spent</a>
+        <a href="https://eshaanis-16824004.codehs.me/">Srihan Forehead Massive</a>
+        <a href="https://bored-of-class-16692634.codehs.me/">Bored Of Class</a>
+        <a href="https://phanis-cool-house-16638329.codehs.me/">Phani's Cool House</a>
+        <a href="https://rizzabh-games-16509919.codehs.me/">Skadoosh's Hub</a>
+        <a href="https://www.echalk.co.uk/amusements/Games/games.html">eChalk</a>
+        <a href="https://unblocked-websites-main-17218379.codehs.me/index.html">Unblocked Websites</a>
+        <a href="https://eclipzeunbgs.codehs.me">gn-math #1</a>
+        <a href="https://cool-2-15870625.codehs.me/">gn-math #2</a>
+        <a href="https://gn-mathgithubio-main-17215986.codehs.me/index.html">gn-math #3</a>
+        <a href="https://gn-mathgithubio-main-1-17216084.codehs.me/index.html">gn-math #4</a>
+        <a href="https://gn-mathgithubio-main-2-17218440.codehs.me/index.html">gn-math #5</a>
+        <a href="https://gn-mathgithubio-main-3-17236945.codehs.me/index.html">gn-math #6</a>
+        <a href="https://gn-mathgithubio-main-4-17236964.codehs.me/index.html">gn-math #7</a>
+        <a href="https://gn-mathgithubio-main-5-17236997.codehs.me/index.html">gn-math #8</a>
+        <a href="https://gn-mathgithubio-main-6-17237020.codehs.me/index.html">gn-math #9</a>
+        <a href="https://gn-mathgithubio-main-7-17237044.codehs.me/index.html">gn-math #10</a>
+        <a href="https://new-sandbox-program-82-17205112.codehs.me/index.html">Encoder/Decoder</a>
+        <a href="https://new-sandbox-program-83-17227451.codehs.me/index.html">Data URL Converter</a>
+        <a href="https://dogeub-sooty.vercel.app/">Doge</a>
+        <a href="https://course.how.laurengillett.com/">Utopia #1</a>
+        <a href="https://study.info.scallex.net/">Utopia #2</a>
+        <a class="pageb" href="https://securly.com.mtomtech.co.kr/">Study.com (Roblox)</a>
+        <a class="pageb" href="https://rblx-7918337.codehs.me/">Roblox</a>
+      </div>
+
+      <!-- Games Category -->
+      <div class="category" data-category="games">
+        <h2>Games</h2>
+        <a href="COMMENTS.html">Comments (gn-math)</a>
+        <a href="BadParentingone.html">Bad Parenting 1</a>
+        <a href="BaldisBasicsPlus.html">Baldi's Basics Plus</a>
+        <a href="BendyandtheInkMachine.html">Bendy and the Ink Machine</a>
+      </div>
+
+      <!-- Eaglercraft Category -->
+      <div class="category" data-category="eaglercraft">
+        <h2>Eaglercraft</h2>
+        <a href="https://new-sandbox-program-43-16834996.codehs.me/index.html">Eaglercraft Indev</a>
+        <a href="https://new-sandbox-program-42-16834902.codehs.me/index.html">Eaglercraft Beta 1.2.6</a>
+        <a href="https://new-sandbox-program-41-16834838.codehs.me/index.html">Eaglercraft Beta 1.3</a>
+        <a href="https://new-sandbox-program-40-16834750.codehs.me/index.html">Eaglercraft Beta 1.7.3</a>
+        <a href="https://new-sandbox-program-38-16834232.codehs.me/index.html">Eaglercraft 1.5.2</a>
+        <a href="https://codehs.com/uploads/d88866b9c3eb083b43dac1a94e54d179">EaglercraftX 1.8</a>
+        <a href="https://codehs.com/uploads/1134b7177ae8e97986729eb34a6ce245">EaglercraftL 1.9.4</a>
+        <a href="https://codehs.com/uploads/37053412754d02c9f1a17740fc92a7c8">EaglercraftX 1.11.2</a>
+        <a href="https://new-sandbox-program-37-16834106.codehs.me/index.html">EaglercraftX 1.12.2</a>
+        <a class="blocked" href="https://new-sandbox-program-39-16834383.codehs.me/index.html">EaglercraftL 1.21.4</a>
+      </div>
+
+      <!-- Other Category -->
+      <div class="category" data-category="other">
+        <h2>Other</h2>
+        <a href="https://drive.google.com/file/d/1nidsUc8iekU_k7Myid8rveo9-cUK0g0h/view?usp=drive_open">Rules</a>
+        <a href="https://forms.gle/cJcDpLaSAm1NNVsR8">Report Form</a>
+        <a href="https://drive.google.com/file/d/1tYhAuR_AHav3PDdVl0CYvyrqd-3iEM1j/view">Summary Of The Rules</a>
+        <a href="https://new-sandbox-program-37-16834106.codehs.me/index.html" target="_blank" onclick="window.open('about:blank').location.href=this.href; return false;">Debug</a>
+        <a href="https://github.com/NolanBetter/nolanbetter.github.io">Fork On Github</a>
+        <a href="https://www.nolangraysongames.com/">Official Link</a>
+        <a class="discord" href="https://discord.gg/nNCWgRJZ7v">Discord</a>
+      </div>
+
+      <!-- Footer -->
+      <p>On November 13th, 2025 at 12:36pm Grayson Barnes And Nolan Boyer Made A Promise To Never Share This Website With Anyone Or Share Any Links on here until 2030. On November 17, 2025 at 7:43am Nolan Boyer And Joseph Dransfield Promised to not share any links on this website With anyone except for Grayson Barnes until 2030. All Other users that join agree to the rules found on the Rules page.</p>
+      <h6>Test Page</h6>
+      <img class="smallimg" src="Logo.png" alt="Logo">
+    </div>
+
+    <script>
+      document.addEventListener('DOMContentLoaded', function() {
+        // Inactivity Timer
+        let inactivityTimer;
+        const INACTIVITY_LIMIT = 120000; // 2 minutes
+
+        function resetInactivityTimer() {
+          clearTimeout(inactivityTimer);
+          inactivityTimer = setTimeout(() => location.reload(), INACTIVITY_LIMIT);
+        }
+
+        function startInactivityRefresh() {
+          resetInactivityTimer();
+          ["mousemove", "keydown", "scroll", "click", "touchstart"].forEach(event => {
+            document.addEventListener(event, resetInactivityTimer);
+          });
+        }
+
+        // Password Check
+        window.checkPassword = function() {
+          const pw = document.getElementById('pw');
+          const error = document.getElementById('pw-error');
+          
+          if (!pw || !error) return;
+          
+          if (pw.value === 'Websitegames') {
+            error.style.display = 'none';
+            document.getElementById('password-area').style.display = 'none';
+            const content = document.getElementById('content');
+            content.style.display = 'block';
+            setTimeout(() => content.classList.add('show'), 10);
+            startInactivityRefresh();
+            initializeAfterPassword();
+          } else {
+            error.style.display = 'block';
+          }
+        };
+
+        // Initialize Features After Password
+        function initializeAfterPassword() {
+          document.querySelectorAll('a').forEach(a => a.target = '_blank');
+          addStarsToLinks();
+          renderFavorites();
+          updateStars();
+        }
+
+        // Unofficial Warning Check
+        const officialOrigin = "https://www.nolangraysongames.com";
+        if (window.location.origin !== officialOrigin) {
+          const warning = document.getElementById("unofficial-warning");
+          if (warning) warning.style.display = "flex";
+        }
+
+        window.closeWarning = function() {
+          const warning = document.getElementById("unofficial-warning");
+          if (warning) warning.style.display = "none";
+        };
+
+        // Canvas Star Animation
+        const canvas = document.getElementById("bg");
+        if (canvas) {
+          const ctx = canvas.getContext("2d");
+
+          function resize() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+          }
+          window.addEventListener("resize", resize);
+          resize();
+
+          const stars = Array.from({ length: 120 }, () => ({
+            x: Math.random() * canvas.width,
+            y: Math.random() * canvas.height,
+            r: Math.random() * 1.5 + 0.5,
+            s: Math.random() * 0.3 + 0.1
+          }));
+
+          function animate() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            ctx.fillStyle = "white";
+            stars.forEach(star => {
+              star.y += star.s;
+              if (star.y > canvas.height) star.y = 0;
+              ctx.beginPath();
+              ctx.arc(star.x, star.y, star.r, 0, Math.PI * 2);
+              ctx.fill();
+            });
+            requestAnimationFrame(animate);
+          }
+          animate();
+        }
+
+        // Search Functionality
+        window.searchLinks = function() {
+          const input = document.getElementById("search");
+          if (!input) return;
+          
+          const value = input.value.toLowerCase();
+          const links = document.querySelectorAll("#content a");
+          const headers = document.querySelectorAll("#content h2, #content h5, #content h6, #content p");
+          
+          links.forEach(link => {
+            const text = link.textContent.toLowerCase();
+            link.style.display = text.includes(value) ? "inline-block" : "none";
+          });
+          headers.forEach(h => h.style.display = value ? "none" : "block");
+        };
+
+        // Clear Search
+        window.clearSearch = function() {
+          const search = document.getElementById("search");
+          if (search) {
+            search.value = "";
+            searchLinks();
+            search.focus();
+          }
+        };
+
+        // Escape Key to Clear Search
+        document.addEventListener("keydown", function(e) {
+          if (e.key === "Escape") clearSearch();
+        });
+
+        // Favorites System
+        const favoritesKey = "favoriteLinks";
+
+        function getFavorites() {
+          return JSON.parse(localStorage.getItem(favoritesKey)) || [];
+        }
+
+        function saveFavorites(favs) {
+          localStorage.setItem(favoritesKey, JSON.stringify(favs));
+        }
+
+        window.toggleFavorite = function(link) {
+          const href = link.href;
+          let favs = getFavorites();
+          const star = link.nextElementSibling;
+
+          if (favs.includes(href)) {
+            favs = favs.filter(f => f !== href);
+          } else {
+            favs.push(href);
+            if (star && star.classList.contains("star")) {
+              star.classList.add("animate");
+              setTimeout(() => star.classList.remove("animate"), 350);
+            }
+          }
+
+          saveFavorites(favs);
+          renderFavorites();
+          updateStars();
+        };
+
+        function renderFavorites() {
+          const favs = getFavorites();
+          const favContainer = document.getElementById("favorites");
+          const title = document.getElementById("favorites-title");
+
+          if (!favContainer || !title) return;
+          favContainer.innerHTML = "";
+
+          if (favs.length === 0) {
+            title.style.display = "none";
+            return;
+          }
+
+          title.style.display = "block";
+          favs.forEach(href => {
+            const original = document.querySelector(`a[href="${href}"]`);
+            if (original) {
+              const clone = original.cloneNode(true);
+              const cloneStar = clone.querySelector(".star");
+              if (cloneStar) cloneStar.remove();
+              favContainer.appendChild(clone);
+            }
+          });
+        }
+
+        function updateStars() {
+          const favs = getFavorites();
+          document.querySelectorAll(".star").forEach(star => {
+            const link = star.previousElementSibling;
+            if (link && favs.includes(link.href)) {
+              star.classList.add("favorited");
+            } else {
+              star.classList.remove("favorited");
+            }
+          });
+        }
+
+        function addStarsToLinks() {
+          document.querySelectorAll("#content a").forEach(link => {
+            if (link.nextElementSibling?.classList.contains("star")) return;
+            const star = document.createElement("span");
+            star.textContent = "★";
+            star.className = "star";
+            star.onclick = () => toggleFavorite(link);
+            link.after(star);
+          });
+          updateStars();
+        }
+
+        // Category Filtering
+        window.showCategory = function(category) {
+          const categories = document.querySelectorAll(".category");
+          const favTitle = document.getElementById("favorites-title");
+          const favs = document.getElementById("favorites");
+
+          if (!favTitle || !favs) return;
+          categories.forEach(cat => cat.style.display = "none");
+          favTitle.style.display = "none";
+          favs.style.display = "none";
+
+          if (category === "all") {
+            categories.forEach(cat => cat.style.display = "block");
+            if (favs.children.length > 0) {
+              favTitle.style.display = "block";
+              favs.style.display = "block";
+            }
+          } else if (category === "favorites") {
+            favTitle.style.display = "block";
+            favs.style.display = "block";
+          } else {
+            const cat = document.querySelector(`.category[data-category="${category}"]`);
+            if (cat) cat.style.display = "block";
+          }
+        };
+
+        // Sorting
+        window.sortLinks = function() {
+          const sortSelect = document.getElementById("sort");
+          if (!sortSelect) return;
+
+          const sortType = sortSelect.value;
+          const categories = document.querySelectorAll(".category");
+
+          categories.forEach(category => {
+            const links = Array.from(category.querySelectorAll("a"));
+            links.sort((a, b) => {
+              const textA = a.textContent.toLowerCase();
+              const textB = b.textContent.toLowerCase();
+
+              if (sortType === "az") return textA.localeCompare(textB);
+              if (sortType === "za") return textB.localeCompare(textA);
+
+              if (sortType === "favorites") {
+                const favs = getFavorites();
+                const aFav = favs.includes(a.href);
+                const bFav = favs.includes(b.href);
+                if (aFav === bFav) return textA.localeCompare(textB);
+                return aFav ? -1 : 1;
+              }
+            });
+
+            links.forEach(link => {
+              const star = link.nextElementSibling;
+              category.appendChild(link);
+              if (star?.classList.contains("star")) category.appendChild(star);
+            });
+          });
+        };
+
+        window.saveAndSort = function() {
+          const sortSelect = document.getElementById("sort");
+          if (!sortSelect) return;
+          localStorage.setItem("sortOption", sortSelect.value);
+          sortLinks();
+        };
+
+        // Load Saved Sort
+        const savedSort = localStorage.getItem("sortOption");
+        if (savedSort) {
+          const sortSelect = document.getElementById("sort");
+          if (sortSelect) {
+            sortSelect.value = savedSort;
+            sortLinks();
+          }
+        }
+
+        // Theme System
+        window.setTheme = function(theme) {
+          document.body.className = theme;
+          localStorage.setItem("theme", theme);
+        };
+
+        // Load Saved Theme
+        const savedTheme = localStorage.getItem("theme") || "dark";
+        document.body.className = savedTheme;
+        const themeSelect = document.getElementById("themeSelect");
+        if (themeSelect) themeSelect.value = savedTheme;
+
+      });
+    </script>
+  </body>
+</html>
