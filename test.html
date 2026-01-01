@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Nolan's And Grayson's Games</title>
-    <link rel="icon" href="Logo.png" type="image/x-icon">
+    <link rel="icon" href="https://nolangraysongames.com/Logo.png" type="image/x-icon">
     <style>
       * {
         transition: background-color 0.4s ease, color 0.4s ease, border-color 0.4s ease;
@@ -105,7 +105,7 @@
       h2 {
         text-decoration: underline;
         font-size: 1.5em;
-        margin: 20px 10px;
+        margin: 20px 10px 10px 10px;
       }
 
       h6 {
@@ -142,58 +142,8 @@
       .wobble {
         max-width: 90%;
         height: auto;
-      }
-
-      /* Password Area */
-      #password-area {
-        position: fixed;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        z-index: 100;
-        width: 90%;
-        max-width: 400px;
-        padding: 0 10px;
-        box-sizing: border-box;
-      }
-
-      #pw {
-        font-size: 18px;
-        padding: 12px;
-        width: 100%;
-        max-width: 300px;
-        background-color: black;
-        color: white;
-        border: 2px solid white;
-        text-align: center;
-        border-radius: 10px;
-        box-sizing: border-box;
-      }
-
-      #submit-btn {
-        font-size: 18px;
-        padding: 12px 20px;
-        margin-top: 10px;
-        background-color: black;
-        color: white;
-        border: 2px solid white;
-        cursor: pointer;
-        border-radius: 10px;
-        transition: transform 0.25s ease;
-        width: 100%;
-        max-width: 300px;
-      }
-
-      #submit-btn:hover {
-        transform: scale(1.05);
-      }
-
-      .pw-error {
-        display: none;
-        color: red;
-        font-size: 18px;
-        margin-top: 12px;
-        text-align: center;
+        margin: 20px auto;
+        display: block;
       }
 
       /* Content Area */
@@ -242,6 +192,8 @@
         width: 100%;
         height: 100%;
         background: rgba(0, 0, 0, 0.85);
+        backdrop-filter: blur(10px);
+        -webkit-backdrop-filter: blur(10px);
         display: none;
         align-items: center;
         justify-content: center;
@@ -635,10 +587,6 @@
           gap: 5px;
         }
 
-        #pw, #submit-btn {
-          font-size: 16px;
-        }
-
         .warning-box {
           padding: 15px;
         }
@@ -689,15 +637,8 @@
     <!-- Title -->
     <img class="wobble" src="https://nolangraysongames.com/Title.png" alt="Title" onclick="window.location.href='https://www.nolangraysongames.com';" style="cursor:pointer;">
 
-    <!-- Password Area -->
-    <div id="password-area">
-      <input type="password" id="pw" placeholder="Enter password">
-      <button id="submit-btn" onclick="checkPassword()">Enter</button>
-      <p id="pw-error" class="pw-error">❌ Wrong password</p>
-    </div>
-
     <!-- Main Content -->
-    <div id="content">
+    <div id="content" class="show">
       <!-- Search -->
       <div class="search-container">
         <input type="text" id="search" placeholder="Search links..." onkeyup="searchLinks()"/>
@@ -851,7 +792,7 @@
         <a href="https://drive.google.com/file/d/1nidsUc8iekU_k7Myid8rveo9-cUK0g0h/view?usp=drive_open">Rules</a>
         <a href="https://forms.gle/cJcDpLaSAm1NNVsR8">Report Form</a>
         <a href="https://drive.google.com/file/d/1tYhAuR_AHav3PDdVl0CYvyrqd-3iEM1j/view">Summary Of The Rules</a>
-        <a href="https://new-sandbox-program-37-16834106.codehs.me/index.html" target="_blank" onclick="window.open('about:blank').location.href=this.href; return false;">Debug</a>
+        <a href="test.html">Beta Page</a>
         <a href="https://github.com/NolanBetter/nolanbetter.github.io">Fork On Github</a>
         <a href="https://www.nolangraysongames.com/">Official Link</a>
         <a class="discord" href="https://discord.gg/nNCWgRJZ7v">Discord</a>
@@ -859,20 +800,24 @@
 
       <!-- Footer -->
       <p>On November 13th, 2025 at 12:36pm Grayson Barnes And Nolan Boyer Made A Promise To Never Share This Website With Anyone Or Share Any Links on here until 2030. On November 17, 2025 at 7:43am Nolan Boyer And Joseph Dransfield Promised to not share any links on this website With anyone except for Grayson Barnes until 2030. All Other users that join agree to the rules found on the Rules page.</p>
-      <h6>Last Updated On 12/16/25 By Nolan Boyer Via Github.</h6>
+      <h6>Last Updated On 12/31/25 By Nolan Boyer Via Github.</h6>
       <img class="smallimg" src="https://www.nolangraysongames.com/Logo.png" alt="Logo">
     </div>
 
     <script>
       document.addEventListener('DOMContentLoaded', function() {
         
-        // ============================================================
-        // LOCAL STORAGE RESET (REMOVE THIS SECTION IN THE FUTURE)
-        // ============================================================
-        // Uncomment the line below to clear all saved data on page load
-        // localStorage.clear();
-        // ============================================================
-        
+        // Favorites System - Define at the top
+        const favoritesKey = "favoriteLinks";
+
+        function getFavorites() {
+          return JSON.parse(localStorage.getItem(favoritesKey)) || [];
+        }
+
+        function saveFavorites(favs) {
+          localStorage.setItem(favoritesKey, JSON.stringify(favs));
+        }
+
         // Inactivity Timer
         let inactivityTimer;
         const INACTIVITY_LIMIT = 120000; // 2 minutes
@@ -889,50 +834,133 @@
           });
         }
 
-        // Password Check
-        window.checkPassword = function() {
-          const pw = document.getElementById('pw');
-          const error = document.getElementById('pw-error');
-          
-          if (!pw || !error) return;
-          
-          if (pw.value === 'Websitegames') {
-            error.style.display = 'none';
-            document.getElementById('password-area').style.display = 'none';
-            const content = document.getElementById('content');
-            content.style.display = 'block';
-            setTimeout(() => content.classList.add('show'), 10);
-            startInactivityRefresh();
-            initializeAfterPassword();
-          } else {
-            error.style.display = 'block';
-          }
-        };
+        // Start inactivity timer
+        startInactivityRefresh();
 
-        // Initialize Features After Password
-        function initializeAfterPassword() {
-          document.querySelectorAll('a').forEach(a => a.target = '_blank');
-          addStarsToLinks();
+        // Toggle Favorite Function - Define before using
+        window.toggleFavorite = function(link) {
+          const href = link.href;
+          let favs = getFavorites();
+          const container = link.closest('.link-container');
+          const star = container ? container.querySelector('.star') : null;
+
+          if (favs.includes(href)) {
+            favs = favs.filter(f => f !== href);
+          } else {
+            favs.push(href);
+            if (star) {
+              star.classList.add("animate");
+              setTimeout(() => star.classList.remove("animate"), 350);
+            }
+          }
+
+          saveFavorites(favs);
           renderFavorites();
           updateStars();
+        };
+
+        function renderFavorites() {
+          const favs = getFavorites();
+          const favContainer = document.getElementById("favorites");
+          const title = document.getElementById("favorites-title");
+
+          if (!favContainer || !title) return;
+          favContainer.innerHTML = "";
+
+          if (favs.length === 0) {
+            title.style.display = "none";
+            return;
+          }
+
+          title.style.display = "block";
+          favs.forEach(href => {
+            const original = document.querySelector(`a[href="${href}"]`);
+            if (original) {
+              const clone = original.cloneNode(true);
+              const wrapper = document.createElement("div");
+              wrapper.className = "link-container";
+              wrapper.appendChild(clone);
+              
+              // Add star to favorite
+              const star = document.createElement("span");
+              star.textContent = "★";
+              star.className = "star favorited";
+              star.onclick = (e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                toggleFavorite(clone);
+              };
+              wrapper.appendChild(star);
+              
+              favContainer.appendChild(wrapper);
+            }
+          });
         }
+
+        function updateStars() {
+          const favs = getFavorites();
+          document.querySelectorAll(".star").forEach(star => {
+            const container = star.closest('.link-container');
+            if (container) {
+              const link = container.querySelector("a");
+              if (link && favs.includes(link.href)) {
+                star.classList.add("favorited");
+              } else {
+                star.classList.remove("favorited");
+              }
+            }
+          });
+        }
+
+        function addStarsToLinks() {
+          document.querySelectorAll("#content a").forEach(link => {
+            // Skip if already wrapped
+            if (link.parentElement.classList.contains('link-container')) return;
+
+            // Create wrapper
+            const wrapper = document.createElement("div");
+            wrapper.className = "link-container";
+            
+            // Insert wrapper before link
+            link.parentNode.insertBefore(wrapper, link);
+            
+            // Move link into wrapper
+            wrapper.appendChild(link);
+
+            // Create and add star
+            const star = document.createElement("span");
+            star.textContent = "★";
+            star.className = "star";
+            star.onclick = (e) => {
+              e.preventDefault();
+              e.stopPropagation();
+              toggleFavorite(link);
+            };
+            wrapper.appendChild(star);
+          });
+          updateStars();
+        }
+
+        // Initialize Features
+        document.querySelectorAll('a').forEach(a => a.target = '_blank');
+        addStarsToLinks();
+        renderFavorites();
+        updateStars();
 
         // Unofficial Warning Check
         const officialOrigins = [
           "https://www.nolangraysongames.com",
-          "https://nolansandgraysonsgames.w3spaces.com"
-          "https://nolanbetter.github.io"
-          "https://nolanbetter-github-io.vercel.app"
-          "https://mathisfun-lilac.vercel.app"
+          "https://nolansandgraysonsgames.w3spaces.com",
+          "https://nolanbetter.github.io",
+          "https://nolanbetter-github-io.vercel.app",
+          "https://mathisfun-lilac.vercel.app",
           "https://clevercom-iota.vercel.app"
-          "https://nolangraysongames-0dfson9ko.edgeone.app/"
         ];
         
         if (!officialOrigins.includes(window.location.origin)) {
           const warning = document.getElementById("unofficial-warning");
           if (warning) warning.style.display = "flex";
         }
-
 
         window.closeWarning = function() {
           const warning = document.getElementById("unofficial-warning");
@@ -1008,108 +1036,6 @@
           if (e.key === "Escape") clearSearch();
         });
 
-        // Favorites System
-        const favoritesKey = "favoriteLinks";
-
-        function getFavorites() {
-          return JSON.parse(localStorage.getItem(favoritesKey)) || [];
-        }
-
-        function saveFavorites(favs) {
-          localStorage.setItem(favoritesKey, JSON.stringify(favs));
-        }
-
-        window.toggleFavorite = function(link) {
-          const href = link.href;
-          let favs = getFavorites();
-          const container = link.closest('.link-container');
-          const star = container ? container.querySelector('.star') : null;
-
-          if (favs.includes(href)) {
-            favs = favs.filter(f => f !== href);
-          } else {
-            favs.push(href);
-            if (star) {
-              star.classList.add("animate");
-              setTimeout(() => star.classList.remove("animate"), 350);
-            }
-          }
-
-          saveFavorites(favs);
-          renderFavorites();
-          updateStars();
-        };
-
-        function renderFavorites() {
-          const favs = getFavorites();
-          const favContainer = document.getElementById("favorites");
-          const title = document.getElementById("favorites-title");
-
-          if (!favContainer || !title) return;
-          favContainer.innerHTML = "";
-
-          if (favs.length === 0) {
-            title.style.display = "none";
-            return;
-          }
-
-          title.style.display = "block";
-          favs.forEach(href => {
-            const original = document.querySelector(`a[href="${href}"]`);
-            if (original) {
-              const clone = original.cloneNode(true);
-              const wrapper = document.createElement("div");
-              wrapper.className = "link-container";
-              wrapper.appendChild(clone);
-              favContainer.appendChild(wrapper);
-            }
-          });
-        }
-
-        function updateStars() {
-          const favs = getFavorites();
-          document.querySelectorAll(".star").forEach(star => {
-            const container = star.closest('.link-container');
-            if (container) {
-              const link = container.querySelector("a");
-              if (link && favs.includes(link.href)) {
-                star.classList.add("favorited");
-              } else {
-                star.classList.remove("favorited");
-              }
-            }
-          });
-        }
-
-        function addStarsToLinks() {
-          document.querySelectorAll("#content a").forEach(link => {
-            // Skip if already wrapped
-            if (link.parentElement.classList.contains('link-container')) return;
-
-            // Create wrapper
-            const wrapper = document.createElement("div");
-            wrapper.className = "link-container";
-            
-            // Insert wrapper before link
-            link.parentNode.insertBefore(wrapper, link);
-            
-            // Move link into wrapper
-            wrapper.appendChild(link);
-
-            // Create and add star
-            const star = document.createElement("span");
-            star.textContent = "★";
-            star.className = "star";
-            star.onclick = (e) => {
-              e.preventDefault();
-              e.stopPropagation();
-              toggleFavorite(link);
-            };
-            wrapper.appendChild(star);
-          });
-          updateStars();
-        }
-
         // Category Filtering
         window.showCategory = function(category) {
           const categories = document.querySelectorAll(".category");
@@ -1145,27 +1071,30 @@
           const categories = document.querySelectorAll(".category");
 
           categories.forEach(category => {
-            const links = Array.from(category.querySelectorAll("a"));
-            links.sort((a, b) => {
-              const textA = a.textContent.toLowerCase();
-              const textB = b.textContent.toLowerCase();
+            const containers = Array.from(category.querySelectorAll(".link-container"));
+
+            containers.sort((a, b) => {
+              const linkA = a.querySelector("a");
+              const linkB = b.querySelector("a");
+              if (!linkA || !linkB) return 0;
+
+              const textA = linkA.textContent.toLowerCase();
+              const textB = linkB.textContent.toLowerCase();
 
               if (sortType === "az") return textA.localeCompare(textB);
               if (sortType === "za") return textB.localeCompare(textA);
 
               if (sortType === "favorites") {
                 const favs = getFavorites();
-                const aFav = favs.includes(a.href);
-                const bFav = favs.includes(b.href);
+                const aFav = favs.includes(linkA.href);
+                const bFav = favs.includes(linkB.href);
                 if (aFav === bFav) return textA.localeCompare(textB);
                 return aFav ? -1 : 1;
               }
             });
 
-            links.forEach(link => {
-              const star = link.nextElementSibling;
-              category.appendChild(link);
-              if (star?.classList.contains("star")) category.appendChild(star);
+            containers.forEach(container => {
+              category.appendChild(container);
             });
           });
         };
