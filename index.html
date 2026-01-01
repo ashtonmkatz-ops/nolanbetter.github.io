@@ -72,6 +72,19 @@
         color: gold;
       }
 
+      body.dark .pageb {
+        color: yellow;
+      }
+
+      body.dark .blocked {
+        color: red;
+      }
+
+      body.dark .discord {
+        color: blue;
+        border-color: blue;
+      }
+
       /* Links */
       .link-container {
         display: inline-block;
@@ -99,13 +112,18 @@
 
       a:hover {
         transform: scale(1.02);
+        box-shadow: 0 4px 8px rgba(255, 255, 255, 0.2);
+      }
+
+      a:active {
+        transform: scale(0.98);
       }
 
       /* Text Styles */
       h2 {
         text-decoration: underline;
         font-size: 1.5em;
-        margin: 20px 10px;
+        margin: 20px 10px 10px 10px;
       }
 
       h6 {
@@ -142,58 +160,8 @@
       .wobble {
         max-width: 90%;
         height: auto;
-      }
-
-      /* Password Area */
-      #password-area {
-        position: fixed;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        z-index: 100;
-        width: 90%;
-        max-width: 400px;
-        padding: 0 10px;
-        box-sizing: border-box;
-      }
-
-      #pw {
-        font-size: 18px;
-        padding: 12px;
-        width: 100%;
-        max-width: 300px;
-        background-color: black;
-        color: white;
-        border: 2px solid white;
-        text-align: center;
-        border-radius: 10px;
-        box-sizing: border-box;
-      }
-
-      #submit-btn {
-        font-size: 18px;
-        padding: 12px 20px;
-        margin-top: 10px;
-        background-color: black;
-        color: white;
-        border: 2px solid white;
-        cursor: pointer;
-        border-radius: 10px;
-        transition: transform 0.25s ease;
-        width: 100%;
-        max-width: 300px;
-      }
-
-      #submit-btn:hover {
-        transform: scale(1.05);
-      }
-
-      .pw-error {
-        display: none;
-        color: red;
-        font-size: 18px;
-        margin-top: 12px;
-        text-align: center;
+        margin: 20px auto;
+        display: block;
       }
 
       /* Content Area */
@@ -215,7 +183,13 @@
         display: inline-block;
         cursor: pointer;
         animation: wobble 1s infinite;
+        transition: transform 0.3s ease;
       }   
+
+      .wobble:hover {
+        animation: none;
+        transform: scale(1.1) rotate(5deg);
+      }
 
       .wobble:active {
         animation: bounce 1s;
@@ -242,6 +216,8 @@
         width: 100%;
         height: 100%;
         background: rgba(0, 0, 0, 0.85);
+        backdrop-filter: blur(10px);
+        -webkit-backdrop-filter: blur(10px);
         display: none;
         align-items: center;
         justify-content: center;
@@ -287,6 +263,62 @@
 
       .warning-box button:hover {
         transform: scale(1.05);
+      }
+
+      /* W3Spaces Warning */
+      #w3spaces-warning {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.85);
+        backdrop-filter: blur(10px);
+        -webkit-backdrop-filter: blur(10px);
+        display: none;
+        align-items: center;
+        justify-content: center;
+        z-index: 10000;
+        padding: 20px;
+        box-sizing: border-box;
+      }
+
+      .w3spaces-box {
+        background: black;
+        border: 2px solid orange;
+        padding: 20px;
+        max-width: 500px;
+        width: 90%;
+        text-align: center;
+        border-radius: 15px;
+        box-shadow: 0 0 20px orange;
+      }
+
+      .w3spaces-box h2 {
+        color: orange;
+        font-size: 1.3em;
+      }
+
+      .w3spaces-box p {
+        color: white;
+      }
+
+      .w3spaces-box button {
+        margin-top: 20px;
+        padding: 12px 25px;
+        font-size: 16px;
+        background: black;
+        color: white;
+        border: 2px solid orange;
+        border-radius: 10px;
+        cursor: pointer;
+        width: 100%;
+        max-width: 200px;
+      }
+
+      .w3spaces-box button:hover {
+        transform: scale(1.05);
+        box-shadow: 0 0 15px orange;
       }
 
       /* Background Canvas */
@@ -368,6 +400,26 @@
         animation: starPop 0.35s ease;
       }
 
+      /* Fade in animation for content */
+      @keyframes fadeInUp {
+        from {
+          opacity: 0;
+          transform: translateY(20px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      .category {
+        animation: fadeInUp 0.5s ease;
+      }
+
+      h2 {
+        animation: fadeInUp 0.6s ease;
+      }
+
       /* Dropdowns Container */
       .controls-container {
         display: flex;
@@ -391,6 +443,16 @@
         min-width: 140px;
         flex: 1;
         max-width: 200px;
+        transition: all 0.3s ease;
+      }
+
+      #sort:hover, #categorySelect:hover, #themeSelect:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 8px rgba(255, 255, 255, 0.3);
+      }
+
+      #sort:active, #categorySelect:active, #themeSelect:active {
+        transform: translateY(0);
       }
 
       /* Theme Styles */
@@ -600,6 +662,210 @@
         color: #fbbf24;
       }
 
+      /* Sunset Theme */
+      body.sunset {
+        background: linear-gradient(to bottom, #ff6b6b, #ee5a24, #4a1a4a);
+        color: #fff5e1;
+      }
+
+      body.sunset a,
+      body.sunset #submit-btn {
+        background: rgba(74, 26, 74, 0.7);
+        color: #fff5e1;
+        border-color: #ff6b6b;
+      }
+
+      body.sunset .link-container .star {
+        color: #ff6b6b;
+      }
+
+      body.sunset .link-container .star.favorited {
+        color: #ffd700;
+      }
+
+      body.sunset #search,
+      body.sunset #pw,
+      body.sunset #sort,
+      body.sunset #categorySelect,
+      body.sunset #themeSelect {
+        background: rgba(74, 26, 74, 0.7);
+        color: #fff5e1;
+        border-color: #ff6b6b;
+      }
+
+      body.sunset .warning-box {
+        background: rgba(74, 26, 74, 0.9);
+        border-color: #ff6b6b;
+        box-shadow: 0 0 20px #ff6b6b;
+      }
+
+      body.sunset .warning-box h2 {
+        color: #ff6b6b;
+      }
+
+      body.sunset .warning-box button {
+        background: rgba(74, 26, 74, 0.7);
+        color: #fff5e1;
+        border-color: #ff6b6b;
+      }
+
+      body.sunset #clear-search {
+        color: #fff5e1;
+      }
+
+      body.sunset #clear-search:hover {
+        color: #ff6b6b;
+      }
+
+      body.sunset .pageb {
+        color: #ffd93d;
+      }
+
+      body.sunset .blocked {
+        color: #ff4757;
+      }
+
+      body.sunset .discord {
+        color: #a29bfe;
+        border-color: #a29bfe;
+      }
+
+      /* Ocean Theme */
+      body.ocean {
+        background: linear-gradient(to bottom, #0a4d68, #088395, #05bfdb);
+        color: #e8f9fd;
+      }
+
+      body.ocean a,
+      body.ocean #submit-btn {
+        background: rgba(10, 77, 104, 0.7);
+        color: #e8f9fd;
+        border-color: #05bfdb;
+      }
+
+      body.ocean .link-container .star {
+        color: #05bfdb;
+      }
+
+      body.ocean .link-container .star.favorited {
+        color: #ffd93d;
+      }
+
+      body.ocean #search,
+      body.ocean #pw,
+      body.ocean #sort,
+      body.ocean #categorySelect,
+      body.ocean #themeSelect {
+        background: rgba(10, 77, 104, 0.7);
+        color: #e8f9fd;
+        border-color: #05bfdb;
+      }
+
+      body.ocean .warning-box {
+        background: rgba(10, 77, 104, 0.9);
+        border-color: #05bfdb;
+        box-shadow: 0 0 20px #05bfdb;
+      }
+
+      body.ocean .warning-box h2 {
+        color: #05bfdb;
+      }
+
+      body.ocean .warning-box button {
+        background: rgba(10, 77, 104, 0.7);
+        color: #e8f9fd;
+        border-color: #05bfdb;
+      }
+
+      body.ocean #clear-search {
+        color: #e8f9fd;
+      }
+
+      body.ocean #clear-search:hover {
+        color: #05bfdb;
+      }
+
+      body.ocean .pageb {
+        color: #00d9ff;
+      }
+
+      body.ocean .blocked {
+        color: #ff6b9d;
+      }
+
+      body.ocean .discord {
+        color: #4ecdc4;
+        border-color: #4ecdc4;
+      }
+
+      /* Forest Theme */
+      body.forest {
+        background: linear-gradient(to bottom, #1a3a1a, #2d5016, #4a7c59);
+        color: #d4edda;
+      }
+
+      body.forest a,
+      body.forest #submit-btn {
+        background: rgba(26, 58, 26, 0.7);
+        color: #d4edda;
+        border-color: #6fb98f;
+      }
+
+      body.forest .link-container .star {
+        color: #6fb98f;
+      }
+
+      body.forest .link-container .star.favorited {
+        color: #ffd700;
+      }
+
+      body.forest #search,
+      body.forest #pw,
+      body.forest #sort,
+      body.forest #categorySelect,
+      body.forest #themeSelect {
+        background: rgba(26, 58, 26, 0.7);
+        color: #d4edda;
+        border-color: #6fb98f;
+      }
+
+      body.forest .warning-box {
+        background: rgba(26, 58, 26, 0.9);
+        border-color: #6fb98f;
+        box-shadow: 0 0 20px #6fb98f;
+      }
+
+      body.forest .warning-box h2 {
+        color: #6fb98f;
+      }
+
+      body.forest .warning-box button {
+        background: rgba(26, 58, 26, 0.7);
+        color: #d4edda;
+        border-color: #6fb98f;
+      }
+
+      body.forest #clear-search {
+        color: #d4edda;
+      }
+
+      body.forest #clear-search:hover {
+        color: #6fb98f;
+      }
+
+      body.forest .pageb {
+        color: #90ee90;
+      }
+
+      body.forest .blocked {
+        color: #ff6b6b;
+      }
+
+      body.forest .discord {
+        color: #8fbc8f;
+        border-color: #8fbc8f;
+      }
+
       /* Mobile Optimizations */
       @media screen and (max-width: 768px) {
         .wobble {
@@ -633,10 +899,6 @@
 
         .controls-container {
           gap: 5px;
-        }
-
-        #pw, #submit-btn {
-          font-size: 16px;
         }
 
         .warning-box {
@@ -689,15 +951,8 @@
     <!-- Title -->
     <img class="wobble" src="https://nolangraysongames.com/Title.png" alt="Title" onclick="window.location.href='https://www.nolangraysongames.com';" style="cursor:pointer;">
 
-    <!-- Password Area -->
-    <div id="password-area">
-      <input type="password" id="pw" placeholder="Enter password">
-      <button id="submit-btn" onclick="checkPassword()">Enter</button>
-      <p id="pw-error" class="pw-error">❌ Wrong password</p>
-    </div>
-
     <!-- Main Content -->
-    <div id="content">
+    <div id="content" class="show">
       <!-- Search -->
       <div class="search-container">
         <input type="text" id="search" placeholder="Search links..." onkeyup="searchLinks()"/>
@@ -723,8 +978,12 @@
 
         <select id="themeSelect" onchange="setTheme(this.value)">
           <option value="dark">🌙 Dark</option>
+          <option value="light">☀️ Light</option>
           <option value="neon">🌈 Neon</option>
           <option value="midnight">🌌 Midnight</option>
+          <option value="sunset">🌅 Sunset</option>
+          <option value="ocean">🌊 Ocean</option>
+          <option value="forest">🌲 Forest</option>
         </select>
       </div>
 
@@ -866,13 +1125,17 @@
     <script>
       document.addEventListener('DOMContentLoaded', function() {
         
-        // ============================================================
-        // LOCAL STORAGE RESET (REMOVE THIS SECTION IN THE FUTURE)
-        // ============================================================
-        // Uncomment the line below to clear all saved data on page load
-        // localStorage.clear();
-        // ============================================================
-        
+        // Favorites System - Define at the top
+        const favoritesKey = "favoriteLinks";
+
+        function getFavorites() {
+          return JSON.parse(localStorage.getItem(favoritesKey)) || [];
+        }
+
+        function saveFavorites(favs) {
+          localStorage.setItem(favoritesKey, JSON.stringify(favs));
+        }
+
         // Inactivity Timer
         let inactivityTimer;
         const INACTIVITY_LIMIT = 120000; // 2 minutes
@@ -889,33 +1152,121 @@
           });
         }
 
-        // Password Check
-        window.checkPassword = function() {
-          const pw = document.getElementById('pw');
-          const error = document.getElementById('pw-error');
-          
-          if (!pw || !error) return;
-          
-          if (pw.value === 'Websitegames') {
-            error.style.display = 'none';
-            document.getElementById('password-area').style.display = 'none';
-            const content = document.getElementById('content');
-            content.style.display = 'block';
-            setTimeout(() => content.classList.add('show'), 10);
-            startInactivityRefresh();
-            initializeAfterPassword();
-          } else {
-            error.style.display = 'block';
-          }
-        };
+        // Start inactivity timer
+        startInactivityRefresh();
 
-        // Initialize Features After Password
-        function initializeAfterPassword() {
-          document.querySelectorAll('a').forEach(a => a.target = '_blank');
-          addStarsToLinks();
+        // Toggle Favorite Function - Define before using
+        window.toggleFavorite = function(link) {
+          const href = link.href;
+          let favs = getFavorites();
+          const container = link.closest('.link-container');
+          const star = container ? container.querySelector('.star') : null;
+
+          if (favs.includes(href)) {
+            favs = favs.filter(f => f !== href);
+          } else {
+            favs.push(href);
+            if (star) {
+              star.classList.add("animate");
+              setTimeout(() => star.classList.remove("animate"), 350);
+            }
+          }
+
+          saveFavorites(favs);
           renderFavorites();
           updateStars();
+        };
+
+        function renderFavorites() {
+          const favs = getFavorites();
+          const favContainer = document.getElementById("favorites");
+          const title = document.getElementById("favorites-title");
+
+          if (!favContainer || !title) return;
+          favContainer.innerHTML = "";
+
+          if (favs.length === 0) {
+            title.style.display = "none";
+            return;
+          }
+
+          title.style.display = "block";
+          favs.forEach(href => {
+            const original = document.querySelector(`a[href="${href}"]`);
+            if (original) {
+              const clone = original.cloneNode(true);
+              const wrapper = document.createElement("div");
+              wrapper.className = "link-container";
+              wrapper.appendChild(clone);
+              
+              // Add star to favorite
+              const star = document.createElement("span");
+              star.textContent = "★";
+              star.className = "star favorited";
+              star.onclick = (e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                toggleFavorite(clone);
+              };
+              wrapper.appendChild(star);
+              
+              favContainer.appendChild(wrapper);
+            }
+          });
         }
+
+        function updateStars() {
+          const favs = getFavorites();
+          document.querySelectorAll(".star").forEach(star => {
+            const container = star.closest('.link-container');
+            if (container) {
+              const link = container.querySelector("a");
+              if (link && favs.includes(link.href)) {
+                star.classList.add("favorited");
+              } else {
+                star.classList.remove("favorited");
+              }
+            }
+          });
+        }
+
+        function addStarsToLinks() {
+          document.querySelectorAll("#content a").forEach(link => {
+            // Skip if already wrapped
+            if (link.parentElement.classList.contains('link-container')) return;
+
+            // Create wrapper
+            const wrapper = document.createElement("div");
+            wrapper.className = "link-container";
+            
+            // Insert wrapper before link
+            link.parentNode.insertBefore(wrapper, link);
+            
+            // Move link into wrapper
+            wrapper.appendChild(link);
+
+            // Create and add star
+            const star = document.createElement("span");
+            star.textContent = "★";
+            star.className = "star";
+            star.onclick = (e) => {
+              e.preventDefault();
+              e.stopPropagation();
+              toggleFavorite(link);
+            };
+            wrapper.appendChild(star);
+          });
+          updateStars();
+        }
+
+        // Initialize Features
+        document.querySelectorAll('a').forEach(a => {
+          a.target = '_blank';
+        });
+        
+        addStarsToLinks();
+        renderFavorites();
+        updateStars();
 
         // Unofficial Warning Check
         const officialOrigins = [
@@ -931,7 +1282,6 @@
           const warning = document.getElementById("unofficial-warning");
           if (warning) warning.style.display = "flex";
         }
-
 
         window.closeWarning = function() {
           const warning = document.getElementById("unofficial-warning");
@@ -1007,108 +1357,6 @@
           if (e.key === "Escape") clearSearch();
         });
 
-        // Favorites System
-        const favoritesKey = "favoriteLinks";
-
-        function getFavorites() {
-          return JSON.parse(localStorage.getItem(favoritesKey)) || [];
-        }
-
-        function saveFavorites(favs) {
-          localStorage.setItem(favoritesKey, JSON.stringify(favs));
-        }
-
-        window.toggleFavorite = function(link) {
-          const href = link.href;
-          let favs = getFavorites();
-          const container = link.closest('.link-container');
-          const star = container ? container.querySelector('.star') : null;
-
-          if (favs.includes(href)) {
-            favs = favs.filter(f => f !== href);
-          } else {
-            favs.push(href);
-            if (star) {
-              star.classList.add("animate");
-              setTimeout(() => star.classList.remove("animate"), 350);
-            }
-          }
-
-          saveFavorites(favs);
-          renderFavorites();
-          updateStars();
-        };
-
-        function renderFavorites() {
-          const favs = getFavorites();
-          const favContainer = document.getElementById("favorites");
-          const title = document.getElementById("favorites-title");
-
-          if (!favContainer || !title) return;
-          favContainer.innerHTML = "";
-
-          if (favs.length === 0) {
-            title.style.display = "none";
-            return;
-          }
-
-          title.style.display = "block";
-          favs.forEach(href => {
-            const original = document.querySelector(`a[href="${href}"]`);
-            if (original) {
-              const clone = original.cloneNode(true);
-              const wrapper = document.createElement("div");
-              wrapper.className = "link-container";
-              wrapper.appendChild(clone);
-              favContainer.appendChild(wrapper);
-            }
-          });
-        }
-
-        function updateStars() {
-          const favs = getFavorites();
-          document.querySelectorAll(".star").forEach(star => {
-            const container = star.closest('.link-container');
-            if (container) {
-              const link = container.querySelector("a");
-              if (link && favs.includes(link.href)) {
-                star.classList.add("favorited");
-              } else {
-                star.classList.remove("favorited");
-              }
-            }
-          });
-        }
-
-        function addStarsToLinks() {
-          document.querySelectorAll("#content a").forEach(link => {
-            // Skip if already wrapped
-            if (link.parentElement.classList.contains('link-container')) return;
-
-            // Create wrapper
-            const wrapper = document.createElement("div");
-            wrapper.className = "link-container";
-            
-            // Insert wrapper before link
-            link.parentNode.insertBefore(wrapper, link);
-            
-            // Move link into wrapper
-            wrapper.appendChild(link);
-
-            // Create and add star
-            const star = document.createElement("span");
-            star.textContent = "★";
-            star.className = "star";
-            star.onclick = (e) => {
-              e.preventDefault();
-              e.stopPropagation();
-              toggleFavorite(link);
-            };
-            wrapper.appendChild(star);
-          });
-          updateStars();
-        }
-
         // Category Filtering
         window.showCategory = function(category) {
           const categories = document.querySelectorAll(".category");
@@ -1144,27 +1392,30 @@
           const categories = document.querySelectorAll(".category");
 
           categories.forEach(category => {
-            const links = Array.from(category.querySelectorAll("a"));
-            links.sort((a, b) => {
-              const textA = a.textContent.toLowerCase();
-              const textB = b.textContent.toLowerCase();
+            const containers = Array.from(category.querySelectorAll(".link-container"));
+
+            containers.sort((a, b) => {
+              const linkA = a.querySelector("a");
+              const linkB = b.querySelector("a");
+              if (!linkA || !linkB) return 0;
+
+              const textA = linkA.textContent.toLowerCase();
+              const textB = linkB.textContent.toLowerCase();
 
               if (sortType === "az") return textA.localeCompare(textB);
               if (sortType === "za") return textB.localeCompare(textA);
 
               if (sortType === "favorites") {
                 const favs = getFavorites();
-                const aFav = favs.includes(a.href);
-                const bFav = favs.includes(b.href);
+                const aFav = favs.includes(linkA.href);
+                const bFav = favs.includes(linkB.href);
                 if (aFav === bFav) return textA.localeCompare(textB);
                 return aFav ? -1 : 1;
               }
             });
 
-            links.forEach(link => {
-              const star = link.nextElementSibling;
-              category.appendChild(link);
-              if (star?.classList.contains("star")) category.appendChild(star);
+            containers.forEach(container => {
+              category.appendChild(container);
             });
           });
         };
@@ -1189,7 +1440,7 @@
         // Theme System
         window.setTheme = function(theme) {
           // Remove all theme classes first
-          document.body.classList.remove('dark', 'light', 'neon', 'midnight');
+          document.body.classList.remove('dark', 'light', 'neon', 'midnight', 'sunset', 'ocean', 'forest');
           
           // Add the selected theme class
           document.body.classList.add(theme);
@@ -1208,7 +1459,7 @@
         const savedTheme = localStorage.getItem("theme") || "dark";
         
         // Apply theme immediately
-        document.body.classList.remove('dark', 'light', 'neon', 'midnight');
+        document.body.classList.remove('dark', 'light', 'neon', 'midnight', 'sunset', 'ocean', 'forest');
         document.body.classList.add(savedTheme);
         
         // Update select element
