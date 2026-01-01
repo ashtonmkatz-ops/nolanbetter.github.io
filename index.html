@@ -948,6 +948,19 @@
       </div>
     </div>
 
+    <!-- W3Spaces Warning -->
+    <div id="w3spaces-warning">
+      <div class="w3spaces-box">
+        <h2>⚠️ Limited Compatibility Notice</h2>
+        <p>
+          You Are Playing On A Website Where Not All Games Might Work.<br><br>
+          Some games may have compatibility issues on this platform.
+          For the best experience, visit the official site.
+        </p>
+        <button onclick="closeW3SpacesWarning()">I Understand</button>
+      </div>
+    </div>
+
     <!-- Title -->
     <img class="wobble" src="https://nolangraysongames.com/Title.png" alt="Title" onclick="window.location.href='https://www.nolangraysongames.com';" style="cursor:pointer;">
 
@@ -1118,7 +1131,7 @@
 
       <!-- Footer -->
       <p>On November 13th, 2025 at 12:36pm Grayson Barnes And Nolan Boyer Made A Promise To Never Share This Website With Anyone Or Share Any Links on here until 2030. On November 17, 2025 at 7:43am Nolan Boyer And Joseph Dransfield Promised to not share any links on this website With anyone except for Grayson Barnes until 2030. All Other users that join agree to the rules found on the Rules page.</p>
-      <h6>Last Updated On 01/01/26 By Nolan Boyer Via Github.</h6>
+      <h6>Last Updated On 12/31/25 By Nolan Boyer Via Github.</h6>
       <img class="smallimg" src="https://www.nolangraysongames.com/Logo.png" alt="Logo">
     </div>
 
@@ -1199,14 +1212,18 @@
               wrapper.className = "link-container";
               wrapper.appendChild(clone);
               
-              // Add star to favorite
+              // Add functional star to favorite
               const star = document.createElement("span");
               star.textContent = "★";
               star.className = "star favorited";
               star.onclick = (e) => {
                 e.preventDefault();
                 e.stopPropagation();
-                toggleFavorite(clone);
+                // Find the original link by href to toggle it
+                const originalLink = document.querySelector(`.category a[href="${href}"]`);
+                if (originalLink) {
+                  toggleFavorite(originalLink);
+                }
               };
               wrapper.appendChild(star);
               
@@ -1286,6 +1303,17 @@
         window.closeWarning = function() {
           const warning = document.getElementById("unofficial-warning");
           if (warning) warning.style.display = "none";
+        };
+
+        // W3Spaces Warning Check
+        if (window.location.origin === "https://nolansandgraysonsgames.w3spaces.com") {
+          const w3warning = document.getElementById("w3spaces-warning");
+          if (w3warning) w3warning.style.display = "flex";
+        }
+
+        window.closeW3SpacesWarning = function() {
+          const w3warning = document.getElementById("w3spaces-warning");
+          if (w3warning) w3warning.style.display = "none";
         };
 
         // Canvas Star Animation
