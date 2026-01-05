@@ -350,6 +350,338 @@
         box-shadow: 0 0 15px orange;
       }
 
+      /* Settings Modal */
+      #settings-modal {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.85);
+        backdrop-filter: blur(10px);
+        -webkit-backdrop-filter: blur(10px);
+        display: none;
+        align-items: center;
+        justify-content: center;
+        z-index: 10000;
+        padding: 20px;
+        box-sizing: border-box;
+      }
+
+      .settings-box {
+        background: black;
+        border: 2px solid white;
+        padding: 30px;
+        max-width: 600px;
+        width: 90%;
+        text-align: center;
+        border-radius: 15px;
+        box-shadow: 0 0 20px rgba(255, 255, 255, 0.3);
+        position: relative;
+        max-height: 80vh;
+        overflow-y: auto;
+      }
+
+      .settings-box h2 {
+        color: white;
+        font-size: 1.5em;
+        margin-bottom: 20px;
+      }
+
+      .settings-close {
+        position: absolute;
+        top: 15px;
+        right: 15px;
+        font-size: 28px;
+        cursor: pointer;
+        color: white;
+        width: 35px;
+        height: 35px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 50%;
+        transition: all 0.3s ease;
+      }
+
+      .settings-close:hover {
+        background: rgba(255, 255, 255, 0.2);
+        transform: rotate(90deg);
+      }
+
+      .settings-section {
+        margin: 25px 0;
+        padding: 20px;
+        border: 1px solid rgba(255, 255, 255, 0.3);
+        border-radius: 10px;
+      }
+
+      .settings-section h3 {
+        color: white;
+        font-size: 1.2em;
+        margin-bottom: 15px;
+      }
+
+      .settings-option {
+        margin: 15px 0;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+
+      .settings-option label {
+        color: white;
+        font-size: 1em;
+      }
+
+      .settings-button {
+        padding: 10px 20px;
+        background: black;
+        color: white;
+        border: 2px solid white;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+      }
+
+      .settings-button:hover {
+        transform: scale(1.05);
+        box-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+      }
+
+      .settings-select {
+        padding: 10px 15px;
+        background: black;
+        color: white;
+        border: 2px solid white;
+        border-radius: 8px;
+        cursor: pointer;
+        font-size: 1em;
+        min-width: 150px;
+      }
+
+      /* Theme-specific settings styles */
+      body.light .settings-box {
+        background: white;
+        border-color: black;
+      }
+
+      body.light .settings-box h2,
+      body.light .settings-box h3,
+      body.light .settings-option label {
+        color: black;
+      }
+
+      body.light .settings-close {
+        color: black;
+      }
+
+      body.light .settings-close:hover {
+        background: rgba(0, 0, 0, 0.1);
+      }
+
+      body.light .settings-button {
+        background: white;
+        color: black;
+        border-color: black;
+      }
+
+      body.light .settings-section {
+        border-color: rgba(0, 0, 0, 0.3);
+      }
+
+      body.light .settings-select {
+        background: white;
+        color: black;
+        border-color: black;
+      }
+
+      body.neon .settings-box {
+        background: #0f0f1a;
+        border-color: #39ff14;
+        box-shadow: 0 0 20px #39ff14;
+      }
+
+      body.neon .settings-box h2,
+      body.neon .settings-box h3,
+      body.neon .settings-option label {
+        color: #39ff14;
+      }
+
+      body.neon .settings-close {
+        color: #39ff14;
+      }
+
+      body.neon .settings-close:hover {
+        background: rgba(57, 255, 20, 0.2);
+      }
+
+      body.neon .settings-button {
+        background: #0f0f1a;
+        color: #39ff14;
+        border-color: #39ff14;
+      }
+
+      body.neon .settings-section {
+        border-color: rgba(57, 255, 20, 0.3);
+      }
+
+      body.neon .settings-select {
+        background: #0f0f1a;
+        color: #39ff14;
+        border-color: #39ff14;
+      }
+
+      body.midnight .settings-box {
+        background: #020617;
+        border-color: #6366f1;
+        box-shadow: 0 0 20px #6366f1;
+      }
+
+      body.midnight .settings-box h2,
+      body.midnight .settings-box h3,
+      body.midnight .settings-option label {
+        color: #c7d2fe;
+      }
+
+      body.midnight .settings-close {
+        color: #c7d2fe;
+      }
+
+      body.midnight .settings-close:hover {
+        background: rgba(99, 102, 241, 0.2);
+      }
+
+      body.midnight .settings-button {
+        background: #020617;
+        color: #c7d2fe;
+        border-color: #6366f1;
+      }
+
+      body.midnight .settings-section {
+        border-color: rgba(99, 102, 241, 0.3);
+      }
+
+      body.midnight .settings-select {
+        background: #020617;
+        color: #c7d2fe;
+        border-color: #6366f1;
+      }
+
+      body.sunset .settings-box {
+        background: rgba(74, 26, 74, 0.95);
+        border-color: #ff6b6b;
+        box-shadow: 0 0 20px #ff6b6b;
+      }
+
+      body.sunset .settings-box h2,
+      body.sunset .settings-box h3,
+      body.sunset .settings-option label {
+        color: #fff5e1;
+      }
+
+      body.sunset .settings-close {
+        color: #fff5e1;
+      }
+
+      body.sunset .settings-close:hover {
+        background: rgba(255, 107, 107, 0.2);
+      }
+
+      body.sunset .settings-button {
+        background: rgba(74, 26, 74, 0.7);
+        color: #fff5e1;
+        border-color: #ff6b6b;
+      }
+
+      body.sunset .settings-section {
+        border-color: rgba(255, 107, 107, 0.3);
+      }
+
+      body.sunset .settings-select {
+        background: rgba(74, 26, 74, 0.7);
+        color: #fff5e1;
+        border-color: #ff6b6b;
+      }
+
+      body.ocean .settings-box {
+        background: rgba(10, 77, 104, 0.95);
+        border-color: #05bfdb;
+        box-shadow: 0 0 20px #05bfdb;
+      }
+
+      body.ocean .settings-box h2,
+      body.ocean .settings-box h3,
+      body.ocean .settings-option label {
+        color: #e8f9fd;
+      }
+
+      body.ocean .settings-close {
+        color: #e8f9fd;
+      }
+
+      body.ocean .settings-close:hover {
+        background: rgba(5, 191, 219, 0.2);
+      }
+
+      body.ocean .settings-button {
+        background: rgba(10, 77, 104, 0.7);
+        color: #e8f9fd;
+        border-color: #05bfdb;
+      }
+
+      body.ocean .settings-section {
+        border-color: rgba(5, 191, 219, 0.3);
+      }
+
+      body.ocean .settings-select {
+        background: rgba(10, 77, 104, 0.7);
+        color: #e8f9fd;
+        border-color: #05bfdb;
+      }
+
+      body.forest .settings-box {
+        background: rgba(26, 58, 26, 0.95);
+        border-color: #6fb98f;
+        box-shadow: 0 0 20px #6fb98f;
+      }
+
+      body.forest .settings-box h2,
+      body.forest .settings-box h3,
+      body.forest .settings-option label {
+        color: #d4edda;
+      }
+
+      body.forest .settings-close {
+        color: #d4edda;
+      }
+
+      body.forest .settings-close:hover {
+        background: rgba(111, 185, 143, 0.2);
+      }
+
+      body.forest .settings-button {
+        background: rgba(26, 58, 26, 0.7);
+        color: #d4edda;
+        border-color: #6fb98f;
+      }
+
+      body.forest .settings-section {
+        border-color: rgba(111, 185, 143, 0.3);
+      }
+
+      body.forest .settings-select {
+        background: rgba(26, 58, 26, 0.7);
+        color: #d4edda;
+        border-color: #6fb98f;
+      }
+
+      body.default .settings-select {
+        background: black;
+        color: white;
+        border-color: white;
+      }
+
       /* Background Canvas */
       #bg {
         position: fixed;
@@ -1065,6 +1397,63 @@
       </div>
     </div>
 
+    <!-- Settings Modal -->
+    <div id="settings-modal">
+      <div class="settings-box">
+        <span class="settings-close" onclick="closeSettings()">×</span>
+        <h2>⚙️ Settings</h2>
+        
+        <div class="settings-section">
+          <h3>Appearance</h3>
+          <div class="settings-option">
+            <label>Theme</label>
+            <select id="themeSelectModal" class="settings-select" onchange="setTheme(this.value)">
+              <option value="default">🌑 Default</option>
+              <option value="light">☀️ Light</option>
+              <option value="neon">🌈 Neon</option>
+              <option value="midnight">🌌 Midnight</option>
+              <option value="sunset">🌅 Sunset</option>
+              <option value="ocean">🌊 Ocean</option>
+              <option value="forest">🌲 Forest</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="settings-section">
+          <h3>Page Display</h3>
+          <div class="settings-option">
+            <label>Open in Blob</label>
+            <button class="settings-button" onclick="openInBlob()">Open</button>
+          </div>
+          <div class="settings-option">
+            <label>Open in About:Blank</label>
+            <button class="settings-button" onclick="openInAboutBlank()">Open</button>
+          </div>
+        </div>
+
+        <div class="settings-section">
+          <h3>Data Management</h3>
+          <div class="settings-option">
+            <label>Clear All Favorites</label>
+            <button class="settings-button" onclick="clearFavorites()">Clear</button>
+          </div>
+          <div class="settings-option">
+            <label>Clear All Data</label>
+            <button class="settings-button" onclick="clearAllData()">Clear All</button>
+          </div>
+        </div>
+
+        <div class="settings-section">
+          <h3>About</h3>
+          <p style="color: inherit; font-size: 0.9em;">
+            <strong>Version:</strong> 1.0.56<br>
+            <strong>Owner:</strong> Nolan Boyer<br>
+            <strong>Last Updated:</strong> 01/05/26
+          </p>
+        </div>
+      </div>
+    </div>
+
     <!-- Title -->
     <img class="wobble" src="https://nolangraysongames.com/Title.png" alt="Title" onclick="window.location.href='https://www.nolangraysongames.com';" style="cursor:pointer;">
 
@@ -1092,16 +1481,6 @@
           <option value="az">🔤 A–Z</option>
           <option value="za">🔤 Z–A</option>
           <option value="favorites">⭐ Favorites first</option>
-        </select>
-
-        <select id="themeSelect" onchange="setTheme(this.value)">
-          <option value="default">🌑 Default</option>
-          <option value="light">☀️ Light</option>
-          <option value="neon">🌈 Neon</option>
-          <option value="midnight">🌌 Midnight</option>
-          <option value="sunset">🌅 Sunset</option>
-          <option value="ocean">🌊 Ocean</option>
-          <option value="forest">🌲 Forest</option>
         </select>
       </div>
 
@@ -1337,11 +1716,11 @@
         <a href="https://github.com/NolanBetter/nolanbetter.github.io">Fork On Github</a>
         <a href="https://www.nolangraysongames.com/">Official Link</a>
         <a class="discord" href="https://discord.gg/nNCWgRJZ7v">Discord</a>
+        <a href="#" onclick="openSettings(); return false;">Settings</a>
       </div>
 
       <!-- Footer -->
       <p class="footer-text">On November 13th, 2025 at 12:36pm Grayson Barnes And Nolan Boyer Made A Promise To Never Share This Website With Anyone Or Share Any Links on here until 2030. On November 17, 2025 at 7:43am Nolan Boyer And Joseph Dransfield Promised to not share any links on this website With anyone except for Grayson Barnes until 2030. All Other users that join agree to the rules found on the Rules page.</p>
-      <h6>Last Updated On: 01/04/26, Version: 1.0.0, Owner: Nolan Boyer, Updated Platform: Github</h6>
       <div style="text-align: center;">
         <p id="visitor-count">👥 Total Visitors: <span id="count">Loading...</span></p>
       </div>
@@ -1533,7 +1912,8 @@
           "https://nolanbetter.github.io",
           "https://nolanbetter-github-io.vercel.app",
           "https://mathisfun-lilac.vercel.app",
-          "https://clevercom-iota.vercel.app"
+          "https://clevercom-iota.vercel.app",
+          "about:blank"
         ];
         
         if (!officialOrigins.includes(window.location.origin)) {
@@ -1555,6 +1935,59 @@
         window.closeW3SpacesWarning = function() {
           const w3warning = document.getElementById("w3spaces-warning");
           if (w3warning) w3warning.style.display = "none";
+        };
+
+        // Settings Modal Functions
+        window.openSettings = function() {
+          const modal = document.getElementById("settings-modal");
+          if (modal) modal.style.display = "flex";
+          
+          // Sync theme selector in modal with current theme
+          const currentTheme = document.body.className;
+          const themeSelectModal = document.getElementById("themeSelectModal");
+          if (themeSelectModal) {
+            themeSelectModal.value = currentTheme;
+          }
+        };
+
+        window.closeSettings = function() {
+          const modal = document.getElementById("settings-modal");
+          if (modal) modal.style.display = "none";
+        };
+
+        window.clearFavorites = function() {
+          if (confirm("Are you sure you want to clear all favorites?")) {
+            localStorage.removeItem(favoritesKey);
+            renderFavorites();
+            updateStars();
+            alert("Favorites cleared!");
+          }
+        };
+
+        window.clearAllData = function() {
+          if (confirm("Are you sure you want to clear ALL data? This will reset favorites, visitor count, theme, and sorting preferences.")) {
+            localStorage.clear();
+            sessionStorage.clear();
+            alert("All data cleared! The page will now reload.");
+            location.reload();
+          }
+        };
+
+        window.openInBlob = function() {
+          const htmlContent = document.documentElement.outerHTML;
+          const blob = new Blob([htmlContent], { type: 'text/html' });
+          const blobUrl = URL.createObjectURL(blob);
+          window.open(blobUrl, '_blank');
+        };
+
+        window.openInAboutBlank = function() {
+          const htmlContent = document.documentElement.outerHTML;
+          const win = window.open('about:blank', '_blank');
+          if (win) {
+            win.document.open();
+            win.document.write(htmlContent);
+            win.document.close();
+          }
         };
 
         // Canvas Star Animation
