@@ -1790,56 +1790,79 @@
         }
 
         // Inactivity Timer
-        let inactivityTimer = null;
-        let inactivityLimit = 120000; // default = 2 minutes
-        let inactivityEnabled = true;
-      
-        function refreshNow() {
-          location.reload();
-        }
-      
-        function resetInactivityTimer() {
-          if (!inactivityEnabled) return;
-      
-          clearTimeout(inactivityTimer);
-          inactivityTimer = setTimeout(() => {
-            location.reload();
-          }, inactivityLimit);
-        }
-      
-        function startInactivityRefresh() {
-          if (!inactivityEnabled) return;
-      
-          resetInactivityTimer();
-      
-          ["mousemove", "keydown", "scroll", "click", "touchstart"].forEach(event => {
-            document.addEventListener(event, resetInactivityTimer);
-          });
-        }
-      
-        function stopInactivityRefresh() {
-          clearTimeout(inactivityTimer);
-          inactivityTimer = null;
-        }
-      
-        function updateInactivityTimer() {
-          const select = document.getElementById("inactivitySelect");
-          const value = select.value;
-      
-          if (value === "off") {
-            inactivityEnabled = false;
+       <script>
+          let inactivityTimer = null;
+          let inactivityLimit = 120000; // default 2 minutes
+          let inactivityEnabled = true;
+        
+          const activityEvents = [
+            "mousemove",
+            "keydown",
+            "scroll",
+            "click",
+            "touchstart"
+          ];
+        
+          function forceRefresh() {
+            // Hard refresh that always works
+            window.location.replace(window.location.href);
+          }
+        
+          function refreshNow() {
+            forceRefresh();
+          }
+        
+          function resetInactivityTimer() {
+            if (!inactivityEnabled) return;
+        
+            clearTimeout(inactivityTimer);
+        
+            inactivityTimer = setTimeout(() => {
+              forceRefresh();
+            }, inactivityLimit);
+          }
+        
+          function startInactivityRefresh() {
+            resetInactivityTimer();
+        
+            activityEvents.forEach(event => {
+              document.addEventListener(event, resetInactivityTimer, { passive: true });
+            });
+          }
+        
+          function stopInactivityRefresh() {
+            clearTimeout(inactivityTimer);
+            inactivityTimer = null;
+        
+            activityEvents.forEach(event => {
+              document.removeEventListener(event, resetInactivityTimer);
+            });
+          }
+        
+          function updateInactivityTimer() {
+            const select = document.getElementById("inactivitySelect");
+            if (!select) return;
+        
+            const value = select.value;
+        
             stopInactivityRefresh();
-          } else {
+        
+            if (value === "off") {
+              inactivityEnabled = false;
+              return;
+            }
+        
             inactivityEnabled = true;
-            inactivityLimit = parseInt(value, 10);
+            inactivityLimit = Number(value);
             startInactivityRefresh();
           }
-        }
-      
-        // Initialize on page load using selected option
-        window.addEventListener("load", () => {
-          updateInactivityTimer();
-        });
+        
+          // Ensure everything is ready before starting
+          document.addEventListener("DOMContentLoaded", () => {
+            updateInactivityTimer();
+          });
+        </script>
+
 
         // Toggle Favorite Function - Define before using
         window.toggleFavorite = function(link) {
