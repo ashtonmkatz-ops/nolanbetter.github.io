@@ -1432,6 +1432,25 @@
         </div>
 
         <div class="settings-section">
+          <h3>Inactivity Settings</h3>
+          <div class="settings-option">
+            <label>Auto-Refresh After</label>
+            <div style="display: flex; gap: 10px;">
+              <select id="inactivitySelect" class="settings-select" onchange="updateInactivityTimer()" style="min-width: 120px;">
+                <option value="30000">30 seconds</option>
+                <option value="60000">1 minute</option>
+                <option value="120000" selected>2 minutes</option>
+                <option value="180000">3 minutes</option>
+                <option value="240000">4 minutes</option>
+                <option value="300000">5 minutes</option>
+                <option value="off">Off</option>
+              </select>
+              <button class="settings-button" onclick="refreshNow()">Refresh Now</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="settings-section">
           <h3>Data Management</h3>
           <div class="settings-option">
             <label>Clear All Favorites</label>
@@ -1446,9 +1465,9 @@
         <div class="settings-section">
           <h3>About</h3>
           <p style="color: inherit; font-size: 0.9em;">
-            <strong>Version:</strong> 1.1.23<br>
+            <strong>Version:</strong> 1.1.23beta<br>
             <strong>Owner:</strong> Nolan Boyer<br>
-            <strong>Last Updated:</strong> 01/05/26<br>
+            <strong>Last Updated:</strong> 01/06/26<br>
             <strong>Updated On:</strong> Github
           </p>
         </div>
@@ -1771,23 +1790,86 @@
         }
 
         // Inactivity Timer
-        let inactivityTimer;
-        const INACTIVITY_LIMIT = 120000; // 2 minutes
-
-        function resetInactivityTimer() {
-          clearTimeout(inactivityTimer);
-          inactivityTimer = setTimeout(() => location.reload(), INACTIVITY_LIMIT);
+        // INACTIVITY TIMER - GLOBAL SCOPE (outside DOMContentLoaded)
+        let inactivityTimer = null;
+        let inactivityLimit = 120000; // default 2 minutes
+        let inactivityEnabled = true;
+        
+        const activityEvents = [
+          "mousemove",
+          "keydown",
+          "scroll",
+          "click",
+          "touchstart"
+        ];
+        
+        function forceRefresh() {
+          window.location.replace(window.location.href);
         }
-
+        
+        window.refreshNow = function() {
+          forceRefresh();
+        }
+        
+        function resetInactivityTimer() {
+          if (!inactivityEnabled) return;
+          
+          clearTimeout(inactivityTimer);
+          
+          inactivityTimer = setTimeout(() => {
+            forceRefresh();
+          }, inactivityLimit);
+        }
+        
         function startInactivityRefresh() {
           resetInactivityTimer();
-          ["mousemove", "keydown", "scroll", "click", "touchstart"].forEach(event => {
-            document.addEventListener(event, resetInactivityTimer);
+          
+          activityEvents.forEach(event => {
+            document.addEventListener(event, resetInactivityTimer, { passive: true });
           });
         }
-
-        // Start inactivity timer
-        startInactivityRefresh();
+        
+        function stopInactivityRefresh() {
+          clearTimeout(inactivityTimer);
+          inactivityTimer = null;
+          
+          activityEvents.forEach(event => {
+            document.removeEventListener(event, resetInactivityTimer);
+          });
+        }
+        
+        window.updateInactivityTimer = function() {
+          const select = document.getElementById("inactivitySelect");
+          if (!select) return;
+          
+          const value = select.value;
+          
+          // Save to localStorage
+          localStorage.setItem("inactivitySetting", value);
+          
+          stopInactivityRefresh();
+          
+          if (value === "off") {
+            inactivityEnabled = false;
+            return;
+          }
+          
+          inactivityEnabled = true;
+          inactivityLimit = Number(value);
+          startInactivityRefresh();
+        }
+        
+        // Load saved inactivity setting
+        function loadInactivitySetting() {
+          const saved = localStorage.getItem("inactivitySetting");
+          const select = document.getElementById("inactivitySelect");
+          
+          if (saved && select) {
+            select.value = saved;
+          }
+          
+          loadInactivitySetting();
+        }
 
         // Toggle Favorite Function - Define before using
         window.toggleFavorite = function(link) {
