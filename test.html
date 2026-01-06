@@ -1844,6 +1844,9 @@
           
           const value = select.value;
           
+          // Save to localStorage
+          localStorage.setItem("inactivitySetting", value);
+          
           stopInactivityRefresh();
           
           if (value === "off") {
@@ -1855,7 +1858,18 @@
           inactivityLimit = Number(value);
           startInactivityRefresh();
         }
-
+        
+        // Load saved inactivity setting
+        function loadInactivitySetting() {
+          const saved = localStorage.getItem("inactivitySetting");
+          const select = document.getElementById("inactivitySelect");
+          
+          if (saved && select) {
+            select.value = saved;
+          }
+          
+          loadInactivitySetting();
+        }
 
         // Toggle Favorite Function - Define before using
         window.toggleFavorite = function(link) {
